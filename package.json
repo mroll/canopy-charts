@@ -1,0 +1,19 @@
+{
+  "name": "canopy-charts",
+  "version": "0.0.1",
+  "description": "Canopy Charts API wrapper",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mroll/canopy-charts.git"
+  },
+  "author": "mroll",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mroll/canopy-charts/issues"
+  },
+  "homepage": "https://github.com/mroll/canopy-charts#readme"
+}
