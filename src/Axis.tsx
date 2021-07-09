@@ -5,8 +5,8 @@ import { Axis as VXAxis, Orientation } from "@visx/axis";
 import { useChartOps } from "./ChartOperations";
 
 function Axis(props: any) {
+  const { id, config } = props;
   const {
-    id,
     label,
     orientation,
     width,
@@ -18,7 +18,7 @@ function Axis(props: any) {
     numTicks,
     dataId,
     chartData,
-  } = props;
+  } = config;
   const { setInteractions } = useChartOps();
 
   const axisData = useMemo(

@@ -6,7 +6,8 @@ import { useChartOps } from "./ChartOperations";
 type GradientType = keyof typeof allGradients;
 
 function RenderGradient(props: any) {
-  const { id, x, y, width, height, fill, rx, gradient, group } = props;
+  const { id, config, group } = props;
+  const { x, y, width, height, fill, rx, gradient } = config;
   const { setInteractions } = useChartOps();
 
   const interactClass = setInteractions(id, {
