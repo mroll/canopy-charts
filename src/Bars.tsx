@@ -56,6 +56,7 @@ function RenderBars(props: any) {
         const barHeight = yMax - (yScale(YY[idx]) ?? 0);
         const barX = xScale(xVal);
         const barY = yMax - barHeight;
+
         return (
           <Bar
             key={`bar-${xVal}`}

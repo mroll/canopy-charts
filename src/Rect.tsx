@@ -7,8 +7,6 @@ function RenderRect(props: any) {
   const { width, height, x, y, rx, fill } = config;
   const { setInteractions } = useChartOps();
 
-  console.log("setinteractions", setInteractions);
-
   const interactClass = setInteractions(id, {
     drag: {
       xField: "x",

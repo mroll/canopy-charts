@@ -9,8 +9,8 @@ import { useChartOps } from "./ChartOperations";
 type CurveType = keyof typeof allCurves;
 
 function RenderCurve(props: any) {
+  const { id, config, dataIdx, chartData } = props;
   const {
-    id,
     curve,
     width,
     height,
@@ -19,9 +19,7 @@ function RenderCurve(props: any) {
     stroke,
     strokeWidth,
     strokeOpacity,
-    dataIdx,
-    chartData,
-  } = props;
+  } = config;
   const { setInteractions } = useChartOps();
 
   const lineData = useMemo(

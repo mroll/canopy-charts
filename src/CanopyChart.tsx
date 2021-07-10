@@ -5,38 +5,25 @@ import CanopyBaseChart from "./CanopyBaseChart";
 import { Chart } from "./types";
 
 function CanopyChart(props: any) {
-  const { id } = props;
-  const [chart, setChart] = useState<Chart>({
-    id: "-1",
-    name: "",
-    userId: "-1",
-    componentsById: {},
-    componentsArray: [],
-    table: [],
-  });
+  const { id, table } = props;
+  const [chart, setChart] = useState<Chart | null>(null);
 
   const getChart = useCallback(async () => {
-    const chart = await fetch(`http://localhost:3001/chart?id=${id}`).then(
+    const _chart = await fetch(`http://localhost:3001/chart?id=${id}`).then(
       (res) => res.json()
     );
-    console.log("chart", chart);
 
-    setChart(chart);
-  }, [id]);
+    setChart({
+      ..._chart,
+      table,
+    });
+  }, [id, setChart]);
 
   useEffect(() => {
     getChart();
-  });
+  }, [getChart]);
 
-  return (
-    <ChartOperationsProvider chart={chart} setChart={setChart}>
-      <CanopyBaseChart
-        componentsById={chart.componentsById}
-        componentsArray={chart.componentsArray}
-        table={chart.table}
-      />
-    </ChartOperationsProvider>
-  );
+  return chart && true && <CanopyBaseChart chart={chart} setChart={setChart} />;
 }
 
 export default CanopyChart;
