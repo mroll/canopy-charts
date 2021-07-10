@@ -19,7 +19,7 @@ const ChartOperationsContext =
   });
 
 export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
-  const { chart, setChart } = args;
+  const { chart, setChart, renderForEditor } = args;
 
   const setComponentFields = (componentId: string, setters: any): void => {
     // Need to use functional update style otherwise consecutive
@@ -39,6 +39,10 @@ export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
     componentId: string,
     options: InteractionOptions
   ): string => {
+    if (!renderForEditor) {
+      return;
+    }
+
     const component = chart.componentsById[componentId];
     const interactClass = `interact-${component.id}`;
     const { xField, yField } = options.drag;

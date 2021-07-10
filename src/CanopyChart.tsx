@@ -23,7 +23,15 @@ function CanopyChart(props: any) {
     getChart();
   }, [getChart]);
 
-  return chart && true && <CanopyBaseChart chart={chart} setChart={setChart} />;
+  return (
+    chart && (
+      <CanopyBaseChart
+        chart={chart}
+        setChart={setChart}
+        renderForEditor={false}
+      />
+    )
+  );
 }
 
 export default CanopyChart;

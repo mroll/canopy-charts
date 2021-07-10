@@ -78,5 +78,6 @@ type FunctionalSetter = (prevChart: Chart) => void
 export interface ChartOperationsProviderArgs {
     chart: Chart;
     setChart: ((newChart: Chart) => void) | ((setter: FunctionalSetter) => void)
+    renderForEditor: boolean
     children: JSX.Element | ReactNode;
 }

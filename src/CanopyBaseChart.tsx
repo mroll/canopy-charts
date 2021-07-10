@@ -72,7 +72,11 @@ function CanopyBaseChart(props: any) {
     : BaseChartForRemoteApp;
 
   return (
-    <ChartOperationsProvider chart={chart} setChart={setChart}>
+    <ChartOperationsProvider
+      chart={chart}
+      setChart={setChart}
+      renderForEditor={renderForEditor}
+    >
       <BaseChartComponent chart={chart}>
         {chart.componentsArray.map((componentId: string) => (
           <ChartComponent
