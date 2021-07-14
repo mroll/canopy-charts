@@ -83,7 +83,7 @@ export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
             min: { width: 100, height: 50 },
           }),
         ],
-        inertia: true,
+        inertia: false,
       })
       .draggable({
         listeners: {
@@ -96,10 +96,10 @@ export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
           move(event) {
             setComponentFields(component.id, {
               [xField]: {
-                $set: component.config[xField] + event.dx,
+                $set: Math.round(component.config[xField] + event.dx),
               },
               [yField]: {
-                $set: component.config[yField] + event.dy,
+                $set: Math.round(component.config[yField] + event.dy),
               },
             });
           },

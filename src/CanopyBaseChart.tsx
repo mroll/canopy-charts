@@ -45,7 +45,15 @@ const viewBox = (chart: Chart): ViewBox => {
 function BaseChartForEditor(props: any) {
   const { children } = props;
 
-  return <svg style={{ width: "100%", height: "100%" }}>{children}</svg>;
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      style={{ width: "100%", height: "100%" }}
+    >
+      {children}
+    </svg>
+  );
 }
 
 function BaseChartForRemoteApp(props: any) {
@@ -56,7 +64,7 @@ function BaseChartForRemoteApp(props: any) {
   return (
     <svg
       width="100%"
-      viewBox={`0 0 ${vb.width} ${vb.height}`}
+      viewBox={`0 0 ${vb.width + 20} ${vb.height + 20}`}
       preserveAspectRatio="xMinYMin"
     >
       {children}

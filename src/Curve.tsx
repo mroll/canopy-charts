@@ -17,15 +17,25 @@ function RenderCurve(props: any) {
     top,
     left,
     stroke,
+    X,
+    Y,
     strokeWidth,
     strokeOpacity,
   } = config;
-  const { setInteractions } = useChartOps();
+  const { setInteractions, getChartTable } = useChartOps();
 
-  const lineData = useMemo(
-    () => (dataIdx === undefined ? [] : chartData[dataIdx].value),
-    [chartData, dataIdx]
-  );
+  const chartTable = getChartTable();
+
+  const XX = X
+    ? chartTable.map((r: (string | number)[]) => r[X])
+    : ["a", "b", "c", "d", "e", "f"];
+  const YY = Y
+    ? chartTable.map((r: (string | number)[]) => r[Y])
+    : [1, 3, 2, 5, 4, 6];
+  const lineData = XX.map((x: string | number, idx: number) => ({
+    label: x,
+    value: idx < YY.length ? YY[idx] : 0,
+  }));
   const getXVal = (d: any) => d.label;
   const getYVal = (d: any) => d.value;
 

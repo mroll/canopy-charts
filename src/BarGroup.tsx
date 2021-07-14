@@ -16,7 +16,19 @@ const getTableColumns = (t: any[], columnIds: string[]) =>
 
 function BarGroup(props: any) {
   const { id, config } = props;
-  const { width, height, left, top, rx, fill, X, Y } = config;
+  const {
+    width,
+    height,
+    left,
+    top,
+    rx,
+    fill,
+    defaultFill,
+    X,
+    Y,
+    defaultX,
+    defaultY,
+  } = config;
   const { setInteractions, getChartTable } = useChartOps();
 
   const chartTable = getChartTable();
@@ -28,8 +40,8 @@ function BarGroup(props: any) {
     },
   });
 
-  const XX = X ? getTableColumn(chartTable, X) : ["a", "b", "c", "d", "e"];
-  const YY = Y ? getTableColumns(chartTable, Y) : [[1, 2, 3, 4, 5]];
+  const XX = X ? getTableColumn(chartTable, X) : defaultX;
+  const YY = Y ? getTableColumns(chartTable, Y) : defaultY;
 
   const barGroupData = Y
     ? XX.map((x0: string, xIdx: number) => ({
@@ -42,9 +54,18 @@ function BarGroup(props: any) {
           {}
         ),
       }))
-    : [];
+    : XX.map((x0: string, xIdx: number) => ({
+        x0,
+        ...defaultY.reduce(
+          (acc: any, columnId: string, yIdx: number) => ({
+            ...acc,
+            [columnId]: YY[yIdx][xIdx],
+          }),
+          {}
+        ),
+      }));
 
-  const keys = Y || [];
+  const keys = Y || defaultY;
 
   const getX0 = (d: any) => d.x0;
 
@@ -109,7 +130,7 @@ function BarGroup(props: any) {
                   y={bar.y}
                   width={bar.width}
                   height={bar.height}
-                  fill={fill[bar.index]}
+                  fill={Y ? fill[bar.index] : defaultFill[bar.index]}
                   rx={rx}
                 />
               ))}

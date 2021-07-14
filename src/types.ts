@@ -19,6 +19,7 @@ export interface ChartComponentConfig {
 	    [key: string]: string | number;
 	}
 	| (string | number)[]
+	| (string | number)[][]
 	| null
 }
 
