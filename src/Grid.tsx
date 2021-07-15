@@ -22,6 +22,7 @@ function Grid(props: any) {
     numTickColumns,
     stroke,
     strokeWidth,
+    padding,
     X,
     Y,
     defaultX,
@@ -51,9 +52,8 @@ function Grid(props: any) {
     () =>
       scaleBand<string>({
         range: [0, xMax],
-        round: true,
         domain: XX,
-        padding: 0.4,
+        padding: padding,
       }),
     [xMax, XX]
   );
@@ -63,19 +63,19 @@ function Grid(props: any) {
       const dMax = Math.max(...YY.map((d: string) => parseInt(d, 10)));
 
       return scaleLinear<number>({
-        range: [0, width],
+        range: [height, 0],
         round: true,
         domain: [0, dMax],
       });
     }
 
     return scaleBand<string>({
-      range: [0, width],
+      range: [height, 0],
       round: true,
       domain: YY,
       padding: 0.4,
     });
-  }, [width, YY]);
+  }, [height, YY]);
 
   return (
     <VXGrid

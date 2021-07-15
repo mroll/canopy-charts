@@ -14,6 +14,7 @@ function Axis(props: any) {
     width,
     left,
     top,
+    padding,
     stroke,
     strokeWidth,
     numTicks,
@@ -44,9 +45,8 @@ function Axis(props: any) {
 
     return scaleBand<string>({
       range: [0, width],
-      round: true,
       domain: DD,
-      padding: 0.4,
+      padding: padding,
     });
   }, [width, DD]);
 

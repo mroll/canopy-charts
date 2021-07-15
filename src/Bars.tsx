@@ -4,18 +4,29 @@ import { Group } from "@visx/group";
 import { scaleBand, scaleLinear } from "@visx/scale";
 
 import { useChartOps } from "./ChartOperations";
+import { getTableColumn, useLinearScale } from "./util";
 
 function RenderBars(props: any) {
   const { id, config } = props;
-  const { width, height, top, left, fill, rx, X, Y } = config;
+  const {
+    width,
+    height,
+    top,
+    left,
+    fill,
+    rx,
+    padding,
+    X,
+    Y,
+    defaultX,
+    defaultY,
+  } = config;
   const { setInteractions, getChartTable } = useChartOps();
 
   const chartTable = getChartTable();
 
-  const XX = X
-    ? chartTable.map((r: string[]) => r[X])
-    : ["a", "b", "c", "d", "e"];
-  const YY = Y ? chartTable.map((r: number[]) => r[Y]) : [1, 2, 3, 4, 5];
+  const XX = X ? getTableColumn(chartTable, X) : defaultX;
+  const YY = Y ? getTableColumn(chartTable, Y) : defaultY;
 
   // bounds
   const xMax = width;
@@ -26,21 +37,29 @@ function RenderBars(props: any) {
     () =>
       scaleBand<string>({
         range: [0, xMax],
-        round: true,
         domain: XX,
-        padding: 0.4,
+        padding: padding,
       }),
     [xMax, XX]
   );
-  const yScale = useMemo(
-    () =>
-      scaleLinear<number>({
-        range: [yMax, 0],
+  const yScale = useMemo(() => {
+    if (useLinearScale(YY)) {
+      const dMax = Math.max(...YY.map((d: string) => parseInt(d, 10)));
+
+      return scaleLinear<number>({
+        range: [height, 0],
         round: true,
-        domain: [0, Math.max(...YY)],
-      }),
-    [yMax, YY]
-  );
+        domain: [0, dMax],
+      });
+    }
+
+    return scaleBand<string>({
+      range: [height, 0],
+      round: true,
+      domain: YY,
+      padding: 0.4,
+    });
+  }, [height, YY]);
 
   const interactClass = setInteractions(id, {
     drag: {
