@@ -1,8 +1,10 @@
 import React, { useMemo } from "react";
 import { scaleBand, scaleLinear } from "@visx/scale";
-import { Axis as VXAxis, Orientation } from "@visx/axis";
+import { Axis as VXAxis } from "@visx/axis";
+import { extent } from "d3-array";
 
 import { useChartOps } from "./ChartOperations";
+import { getTableColumns, useLinearScale } from "./util";
 
 function Axis(props: any) {
   const { id, config } = props;
@@ -10,52 +12,43 @@ function Axis(props: any) {
     label,
     orientation,
     width,
-    height,
     left,
     top,
     stroke,
     strokeWidth,
     numTicks,
-    dataId,
-    chartData,
+    tickLength,
+    tickStroke,
+    hideTicks,
+    hideAxisLine,
+    domain,
   } = config;
-  const { setInteractions } = useChartOps();
+  const { setInteractions, getChartTable } = useChartOps();
 
-  const axisData = useMemo(
-    () => (dataId === undefined ? [] : chartData[dataId].value),
-    [chartData, dataId]
-  );
-  const getXVal = (d: any) => d.label;
-  const getYVal = (d: any) => d.value;
+  const chartTable = getChartTable();
 
-  // bounds
-  const xMax = width;
-  const yMax = height;
+  const DD = (
+    domain ? getTableColumns(chartTable, domain) : [["a", "b", "c"]]
+  ).flatMap((col: string[]) => col.map((x: string) => x));
 
-  // scales, memoize for performance
-  const xScale = useMemo(
-    () =>
-      scaleBand<string>({
-        range: [0, xMax],
+  const scale = useMemo(() => {
+    if (useLinearScale(DD)) {
+      const [dMin, dMax] = extent(DD.map((d) => parseInt(d, 10)));
+
+      return scaleLinear<number>({
+        range: [0, width],
         round: true,
-        domain: axisData.map(getXVal),
-        padding: 0.4,
-      }),
-    [xMax, axisData]
-  );
-  const yScale = useMemo(
-    () =>
-      scaleLinear<number>({
-        range: [yMax, 0],
-        round: true,
-        domain: [0, Math.max(...axisData.map(getYVal))],
-      }),
-    [yMax, axisData]
-  );
-  const scale =
-    orientation === Orientation.top || orientation === Orientation.bottom
-      ? xScale
-      : yScale;
+        domain: [dMin || 0, dMax || 0],
+      });
+    }
+
+    return scaleBand<string>({
+      range: [0, width],
+      round: true,
+      domain: DD,
+      padding: 0.4,
+    });
+  }, [width, DD]);
 
   const interactClass = setInteractions(id, {
     drag: {
@@ -73,8 +66,12 @@ function Axis(props: any) {
       left={left}
       scale={scale}
       numTicks={numTicks}
+      tickLength={tickLength}
+      tickStroke={tickStroke}
+      hideTicks={hideTicks}
       stroke={stroke}
       strokeWidth={strokeWidth}
+      hideAxisLine={hideAxisLine}
     />
   );
 }

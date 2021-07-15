@@ -8,5 +8,8 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
+    "lib": [
+      "dom", "esnext"
+    ]
   }
 }

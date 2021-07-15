@@ -19,6 +19,11 @@
   dependencies:
     classnames "*"
 
+"@types/d3-array@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@types/d3-array/-/d3-array-3.0.1.tgz#0ff28ee7052a2e504cb951d17df7437c33d442d6"
+  integrity sha512-D/G7oG0czeszALrkdUiV68CDiHDxXf+M2mLVqAyKktGd12VKQQljj1sHJGBKjcK4jRH1biBd6ZPQPHpJ0mNa0w==
+
 "@types/d3-color@^1":
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/@types/d3-color/-/d3-color-1.4.2.tgz#944f281d04a0f06e134ea96adbb68303515b2784"
@@ -140,6 +145,21 @@
   dependencies:
     "@types/react" "*"
     prop-types "^15.5.7"
+
+"@visx/grid@^1.16.0":
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/@visx/grid/-/grid-1.16.0.tgz#49eda6ee73cccc6ca559a6a847e2af97c38fc17a"
+  integrity sha512-WxAZ2K9itSbO/uz/6gcK8npE/doTrUz2CKBvvwKOUWjKiHkbmyk8SvNNf2yT6rMaSJ1Qxw63oUn3+j50QpcXKA==
+  dependencies:
+    "@types/classnames" "^2.2.9"
+    "@types/react" "*"
+    "@visx/curve" "1.7.0"
+    "@visx/group" "1.7.0"
+    "@visx/point" "1.7.0"
+    "@visx/scale" "1.14.0"
+    "@visx/shape" "1.16.0"
+    classnames "^2.2.5"
+    prop-types "^15.6.2"
 
 "@visx/group@1.7.0":
   version "1.7.0"
@@ -488,6 +508,13 @@ d3-array@2, d3-array@^2.3.0:
   dependencies:
     internmap "^1.0.0"
 
+d3-array@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-3.0.1.tgz#ca45c263f5bb780ab5a34a6e1d3d5883fe4a8d14"
+  integrity sha512-l3Bh5o8RSoC3SBm5ix6ogaFW+J6rOUm42yOtZ2sQPCEvCqUMepeX7zgrlLLGIemxgOyo9s2CsWEidnLv5PwwRw==
+  dependencies:
+    internmap "1 - 2"
+
 d3-color@1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/d3-color/-/d3-color-1.4.1.tgz#c52002bf8846ada4424d55d97982fef26eb3bc8a"
@@ -713,6 +740,11 @@ interactjs@^1.10.11:
   integrity sha512-VPUWsGAOPmrZe1YF7Fq/4AIBBZ+3FikZRS8bpzT6VsAfUuhxl/CKJY73IAiZHd3fz9p174CXErn0Qs81XEFICA==
   dependencies:
     "@interactjs/types" "1.10.11"
+
+"internmap@1 - 2":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/internmap/-/internmap-2.0.1.tgz#33d0fa016185397549fb1a14ea3dbe5a2949d1cd"
+  integrity sha512-Ujwccrj9FkGqjbY3iVoxD1VV+KdZZeENx0rphrtzmRXbFvkFO88L80BL/zeSIguX/7T+y8k04xqtgWgS5vxwxw==
 
 internmap@^1.0.0:
   version "1.0.1"

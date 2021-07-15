@@ -25,8 +25,11 @@
   },
   "peerDependencies": {},
   "dependencies": {
+    "@types/d3-array": "^3.0.1",
     "@visx/axis": "^1.17.0",
     "@visx/gradient": "^1.7.0",
+    "@visx/grid": "^1.16.0",
+    "d3-array": "^3.0.1",
     "immutability-helper": "^3.1.1",
     "interactjs": "^1.10.11"
   }

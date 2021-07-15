@@ -8,6 +8,7 @@ import RenderBar from "./Bar";
 import RenderBarGroup from "./BarGroup";
 import RenderBars from "./Bars";
 import RenderGroup from "./Group";
+import RenderGrid from "./Grid";
 
 import {
   ChartComponentProps,
@@ -24,6 +25,7 @@ const Component2Render: Component2RenderMap = {
   [ComponentType.Axis]: RenderAxis,
   [ComponentType.Rect]: RenderRect,
   [ComponentType.Group]: RenderGroup,
+  [ComponentType.Grid]: RenderGrid,
 };
 
 function ChartComponentDisplay(props: ChartComponentProps) {

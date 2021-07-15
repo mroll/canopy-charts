@@ -7,6 +7,7 @@ export const ComponentType = {
     BarGroup: "BarGroup",
     Curve: "Curve",
     Gradient: "Gradient",
+    Grid: "Grid",
     Group: "Group",
     Rect: "Rect",
 }
@@ -20,6 +21,7 @@ export interface ChartComponentConfig {
 	}
 	| (string | number)[]
 	| (string | number)[][]
+	| boolean
 	| null
 }
 

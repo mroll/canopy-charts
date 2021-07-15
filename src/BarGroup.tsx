@@ -4,15 +4,10 @@ import { scaleBand, scaleLinear, scaleOrdinal } from "@visx/scale";
 import { BarGroup as VXBarGroup } from "@visx/shape";
 
 import { useChartOps } from "./ChartOperations";
+import { getTableColumn, getTableColumns } from "./util";
 
 const blue = "#aeeef8";
 export const green = "#e5fd3d";
-
-const getTableColumn = (t: any[], columnId: string) =>
-  t.map((r: any) => r[columnId]);
-
-const getTableColumns = (t: any[], columnIds: string[]) =>
-  columnIds.map((columnId: string) => getTableColumn(t, columnId));
 
 function BarGroup(props: any) {
   const { id, config } = props;
