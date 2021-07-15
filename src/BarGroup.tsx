@@ -17,6 +17,8 @@ function BarGroup(props: any) {
     left,
     top,
     rx,
+    outerPadding,
+    innerPadding,
     fill,
     defaultFill,
     X,
@@ -73,14 +75,19 @@ function BarGroup(props: any) {
     () =>
       scaleBand<string>({
         domain: XX,
-        padding: 0.2,
+        padding: outerPadding,
       }),
-    [XX]
+    [XX, outerPadding]
   );
-  const x1Scale = scaleBand<string>({
-    domain: keys,
-    padding: 0.2,
-  });
+
+  const x1Scale = useMemo(
+    () =>
+      scaleBand<string>({
+        domain: keys,
+        padding: innerPadding,
+      }),
+    [keys, innerPadding]
+  );
   const yScale = scaleLinear<number>({
     domain: [
       0,
