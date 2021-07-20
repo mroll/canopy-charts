@@ -14,8 +14,10 @@ import {
 const ChartOperationsContext =
   React.createContext<ChartOperationsContextObject>({
     setComponentFields: () => {},
+    setSelectedComponent: () => {},
     setInteractions: () => "",
     getChartTable: () => [],
+    selectedComponentId: null,
   });
 
 export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
@@ -109,30 +111,23 @@ export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
     return interactClass;
   };
 
-  const setData = (
-    rowIdx: number,
-    colId: string,
-    value: string | number
-  ): void => {
-    setChart(
-      update(chart, {
-        table: {
-          [rowIdx]: {
-            [colId]: {
-              $set: value,
-            },
-          },
-        },
-      })
-    );
+  const setSelectedComponent = (componentId: string) => {
+    setChart({
+      ...chart,
+      selectedComponentId: componentId,
+    });
   };
+
+  const selectedComponentId = chart.selectedComponentId;
 
   const getChartTable = () => chart.table;
 
   const context = {
     setComponentFields,
     setInteractions,
+    setSelectedComponent,
     getChartTable,
+    selectedComponentId,
   };
   const { children } = args;
 

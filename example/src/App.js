@@ -17,9 +17,7 @@ const table = [
 ];
 
 function App() {
-  const chart1 = "60e9c93ad17ecf1abdbd97c8";
-  const chart2 = "60e9cb52d17ecf1abdbd97c9";
-  const chart3 = "60e9e2241b473e277169be05";
+  const chart1 = "60f1d37e65c742b7100b7f2b";
 
   return (
     <div
@@ -36,7 +34,6 @@ function App() {
       <div
         style={{
           width: "50%",
-          height: "fit-content",
           boxShadow: "2px 2px 4px #bbb",
           margin: 10,
           padding: 5,
@@ -45,38 +42,25 @@ function App() {
       >
         <CanopyChart id={chart1} table={table} />
       </div>
-
-      <div
-        style={{
-          width: "50%",
-          height: "fit-content",
-          boxShadow: "2px 2px 4px #bbb",
-          margin: 10,
-          padding: 5,
-          borderRadius: 6,
-        }}
-      >
-        <CanopyChart id={chart2} table={table} />
-      </div>
-
-      <div
-        style={{
-          width: "50%",
-          height: "fit-content",
-          boxShadow: "2px 2px 4px #bbb",
-          margin: 10,
-          padding: 0,
-          borderRadius: 6,
-        }}
-      >
-        <CanopyChart id={chart3} table={table} />
-      </div>
     </div>
   );
 }
 
 export default App;
 
-const data = fetchData();
+function duplicateSpreadsheet(original) {
+  if (original.hasPendingChanges) {
+    throw new Error("You need to save");
+  }
 
-return <CanopyChart name="Gross Revenue" data={data} />;
+  return {
+    ...original,
+    created: Date.now(),
+    metadata: {
+      ...original.metadata,
+      title: "Copy of " + original.metadata.title,
+    },
+  };
+}
+
+console.log(duplicateSpreadsheet);

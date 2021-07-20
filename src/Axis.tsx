@@ -7,7 +7,7 @@ import { useChartOps } from "./ChartOperations";
 import { getTableColumns, useLinearScale } from "./util";
 
 function Axis(props: any) {
-  const { id, config } = props;
+  const { id, config, group } = props;
   const {
     label,
     orientation,
@@ -32,23 +32,33 @@ function Axis(props: any) {
     domain ? getTableColumns(chartTable, domain) : [["a", "b", "c"]]
   ).flatMap((col: string[]) => col.map((x: string) => x));
 
+  const isHorizontal = ["bottom", "top"].includes(orientation);
+
+  const { minX, maxX, minY, maxY } = {
+    minX: group ? group.margin.l : 0,
+    maxX: group ? group.width - group.margin.r : width,
+    minY: group ? group.margin.t : 0,
+    maxY: group ? group.height - group.margin.b : width,
+  };
+
+  const range: [number, number] = isHorizontal ? [minX, maxX] : [maxY, minY];
   const scale = useMemo(() => {
     if (useLinearScale(DD)) {
-      const [dMin, dMax] = extent(DD.map((d) => parseInt(d, 10)));
+      const dMax = extent(DD.map((d) => parseInt(d, 10)))[1];
 
       return scaleLinear<number>({
-        range: [0, width],
+        range,
         round: true,
-        domain: [dMin || 0, dMax || 0],
+        domain: [0, dMax || 0],
       });
     }
 
     return scaleBand<string>({
-      range: [0, width],
+      range: range,
       domain: DD,
       padding: padding,
     });
-  }, [width, DD]);
+  }, [width, DD, range]);
 
   const interactClass = setInteractions(id, {
     drag: {
@@ -57,13 +67,28 @@ function Axis(props: any) {
     },
   });
 
+  const axisTop = isHorizontal
+    ? group
+      ? group.height - group.margin.b + 10
+      : top
+    : group
+    ? 0
+    : 0;
+  const axisLeft = isHorizontal
+    ? group
+      ? 0
+      : left
+    : group
+    ? group.margin.l
+    : 0;
+
   return (
     <VXAxis
       axisClassName={interactClass}
       label={label}
       orientation={orientation}
-      top={top}
-      left={left}
+      top={axisTop}
+      left={axisLeft}
       scale={scale}
       numTicks={numTicks}
       tickLength={tickLength}

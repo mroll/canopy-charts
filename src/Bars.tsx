@@ -7,7 +7,7 @@ import { useChartOps } from "./ChartOperations";
 import { getTableColumn, useLinearScale } from "./util";
 
 function RenderBars(props: any) {
-  const { id, config } = props;
+  const { id, config, group } = props;
   const {
     width,
     height,
@@ -21,7 +21,12 @@ function RenderBars(props: any) {
     defaultX,
     defaultY,
   } = config;
-  const { setInteractions, getChartTable } = useChartOps();
+  const {
+    setInteractions,
+    selectedComponentId,
+    setSelectedComponent,
+    getChartTable,
+  } = useChartOps();
 
   const chartTable = getChartTable();
 
@@ -29,47 +34,62 @@ function RenderBars(props: any) {
   const YY = Y ? getTableColumn(chartTable, Y) : defaultY;
 
   // bounds
-  const xMax = width;
-  const yMax = height;
+  const xMax = group ? group.width - group.margin.r : width;
+  const yMax = group ? group.height - group.margin.b : height;
+
+  const { minX, maxX, minY, maxY } = {
+    minX: group ? group.margin.l : 0,
+    maxX: group ? group.width - group.margin.r : width,
+    minY: group ? group.margin.t : 0,
+    maxY: group ? group.height - group.margin.b : width,
+  };
 
   // scales, memoize for performance
   const xScale = useMemo(
     () =>
       scaleBand<string>({
-        range: [0, xMax],
+        range: [minX, maxX],
         domain: XX,
         padding: padding,
       }),
-    [xMax, XX]
+    [xMax, XX, minX, maxX]
   );
   const yScale = useMemo(() => {
     if (useLinearScale(YY)) {
       const dMax = Math.max(...YY.map((d: string) => parseInt(d, 10)));
 
       return scaleLinear<number>({
-        range: [height, 0],
-        round: true,
+        range: [maxY, minY],
         domain: [0, dMax],
       });
     }
 
     return scaleBand<string>({
-      range: [height, 0],
-      round: true,
+      range: [maxY, minY],
       domain: YY,
       padding: 0.4,
     });
-  }, [height, YY]);
+  }, [height, YY, minY, maxY]);
 
-  const interactClass = setInteractions(id, {
-    drag: {
-      xField: "left",
-      yField: "top",
-    },
-  });
+  const interactClass = group
+    ? ""
+    : setInteractions(id, {
+        drag: {
+          xField: "left",
+          yField: "top",
+        },
+      });
+
+  const classIfSelected =
+    selectedComponentId === id ? "stroke-current text-blue-300 stroke-2" : "";
 
   return (
-    <Group className={interactClass} top={top} left={left}>
+    <Group
+      className={`${interactClass} hover:stroke-current hover:text-blue-300 hover:stroke-2 ${classIfSelected}`}
+      top={top}
+      left={left}
+      onClick={() => setSelectedComponent(id)}
+    >
       {XX.map((xVal: string, idx: number) => {
         const barWidth = xScale.bandwidth();
         const barHeight = yMax - (yScale(YY[idx]) ?? 0);

@@ -5,13 +5,17 @@ import ChartComponent from "./ChartComponent";
 import { useChartOps } from "./ChartOperations";
 
 function Group(props: any) {
-  const { id, config, componentsById } = props;
-  const { left, top, members } = config;
-  const { setInteractions } = useChartOps();
+  const { id, config, members, componentsById } = props;
+  const { left, top, width, height, margin } = config;
+  const { setInteractions, selectedComponentId, setSelectedComponent } =
+    useChartOps();
 
   const group = {
     left,
     top,
+    width,
+    height,
+    margin,
   };
 
   const interactClass = setInteractions(id, {
@@ -21,8 +25,25 @@ function Group(props: any) {
     },
   });
 
+  const classIfSelected =
+    selectedComponentId === id ? "stroke-current text-blue-300 stroke-2" : "";
+
   return (
-    <VXGroup className={interactClass} top={top} left={left}>
+    <VXGroup
+      className={interactClass}
+      style={{ pointerEvents: "all" }}
+      top={top}
+      left={left}
+    >
+      <rect
+        width={width}
+        height={height}
+        fill="#000033"
+        fillOpacity={0.0}
+        rx={4}
+        className={`hover:stroke-current hover:text-blue-300 hover:stroke-2 ${classIfSelected}`}
+        onClick={() => setSelectedComponent(id)}
+      />
       {members &&
         members.map((memberId: string) => (
           <ChartComponent
