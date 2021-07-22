@@ -111,7 +111,7 @@ export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
     return interactClass;
   };
 
-  const setSelectedComponent = (componentId: string) => {
+  const setSelectedComponent = (componentId: string | null) => {
     setChart({
       ...chart,
       selectedComponentId: componentId,

@@ -71,7 +71,7 @@ export interface InteractionOptions {
 export interface ChartOperationsContextObject {
   setComponentFields: (componentId: string, ...setters: any[]) => void;
   setInteractions: (componentId: string, options: InteractionOptions) => string;
-  setSelectedComponent: (componentId: string) => void;
+  setSelectedComponent: (componentId: string | null) => void;
   getChartTable: () => Array<any>;
   selectedComponentId: string;
 }

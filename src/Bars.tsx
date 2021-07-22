@@ -41,7 +41,7 @@ function RenderBars(props: any) {
     minX: group ? group.margin.l : 0,
     maxX: group ? group.width - group.margin.r : width,
     minY: group ? group.margin.t : 0,
-    maxY: group ? group.height - group.margin.b : width,
+    maxY: group ? group.height - group.margin.b : height,
   };
 
   // scales, memoize for performance
@@ -52,7 +52,7 @@ function RenderBars(props: any) {
         domain: XX,
         padding: padding,
       }),
-    [xMax, XX, minX, maxX]
+    [XX, minX, maxX, padding]
   );
   const yScale = useMemo(() => {
     if (useLinearScale(YY)) {

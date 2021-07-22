@@ -44,6 +44,7 @@ const viewBox = (chart: Chart): ViewBox => {
 
 function BaseChartForEditor(props: any) {
   const { children } = props;
+  // const { setSelectedComponent } = useChartOps();
 
   return (
     <svg

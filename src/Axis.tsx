@@ -48,7 +48,6 @@ function Axis(props: any) {
 
       return scaleLinear<number>({
         range,
-        round: true,
         domain: [0, dMax || 0],
       });
     }
@@ -58,7 +57,7 @@ function Axis(props: any) {
       domain: DD,
       padding: padding,
     });
-  }, [width, DD, range]);
+  }, [width, DD, range, padding]);
 
   const interactClass = setInteractions(id, {
     drag: {
@@ -69,7 +68,7 @@ function Axis(props: any) {
 
   const axisTop = isHorizontal
     ? group
-      ? group.height - group.margin.b + 10
+      ? group.height - group.margin.b + top
       : top
     : group
     ? 0
@@ -79,7 +78,7 @@ function Axis(props: any) {
       ? 0
       : left
     : group
-    ? group.margin.l
+    ? group.margin.l + left
     : 0;
 
   return (
