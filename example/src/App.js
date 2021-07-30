@@ -47,20 +47,3 @@ function App() {
 }
 
 export default App;
-
-function duplicateSpreadsheet(original) {
-  if (original.hasPendingChanges) {
-    throw new Error("You need to save");
-  }
-
-  return {
-    ...original,
-    created: Date.now(),
-    metadata: {
-      ...original.metadata,
-      title: "Copy of " + original.metadata.title,
-    },
-  };
-}
-
-console.log(duplicateSpreadsheet);

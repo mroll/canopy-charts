@@ -81,6 +81,7 @@ function BarGroup(props: any) {
   const x0Scale = useMemo(
     () =>
       scaleBand<string>({
+        range: [minX, maxX],
         domain: XX,
         padding: outerPadding,
       }),
@@ -110,7 +111,6 @@ function BarGroup(props: any) {
     range: [blue, green],
   });
 
-  x0Scale.rangeRound([minX, xMax]);
   x1Scale.rangeRound([0, x0Scale.bandwidth()]);
   yScale.range([maxY, minY]);
 
