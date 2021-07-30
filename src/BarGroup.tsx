@@ -10,7 +10,7 @@ const blue = "#aeeef8";
 export const green = "#e5fd3d";
 
 function BarGroup(props: any) {
-  const { id, config } = props;
+  const { id, config, group } = props;
   const {
     width,
     height,
@@ -67,8 +67,15 @@ function BarGroup(props: any) {
   const getX0 = (d: any) => d.x0;
 
   // bounds
-  const xMax = width;
-  const yMax = height;
+  const xMax = group ? group.width - group.margin.r : width;
+  const yMax = group ? group.height - group.margin.b : height;
+
+  const { minX, maxX, minY, maxY } = {
+    minX: group ? group.margin.l : 0,
+    maxX: group ? group.width - group.margin.r : width,
+    minY: group ? group.margin.t : 0,
+    maxY: group ? group.height - group.margin.b : height,
+  };
 
   // scales, memoize for performance
   const x0Scale = useMemo(
@@ -103,9 +110,9 @@ function BarGroup(props: any) {
     range: [blue, green],
   });
 
-  x0Scale.rangeRound([0, xMax]);
+  x0Scale.rangeRound([minX, xMax]);
   x1Scale.rangeRound([0, x0Scale.bandwidth()]);
-  yScale.range([yMax, 0]);
+  yScale.range([maxY, minY]);
 
   return (
     <Group className={interactClass} top={top} left={left}>
