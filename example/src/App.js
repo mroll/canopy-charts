@@ -17,7 +17,7 @@ const table = [
 ];
 
 function App() {
-  const chart1 = "60f85e3fd9038d2a59e6588a";
+  const chart1 = "61036540c4ce30a9c649c6d5";
 
   return (
     <div
@@ -33,7 +33,7 @@ function App() {
     >
       <div
         style={{
-          width: "50%",
+          width: "400px",
           boxShadow: "2px 2px 4px #bbb",
           margin: 10,
           padding: 5,

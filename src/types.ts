@@ -42,6 +42,7 @@ export interface ChartComponentProps extends ChartComponent {
   table: Array<any>;
   group?: any;
   dataId?: string;
+  renderForEditor: boolean;
 }
 
 export interface Component2RenderMap {
@@ -51,7 +52,7 @@ export interface Component2RenderMap {
 export interface Chart {
   id: string;
   name: string;
-  color: string
+  color: string;
   userId: string;
   createdAt?: Date;
   componentsById: {

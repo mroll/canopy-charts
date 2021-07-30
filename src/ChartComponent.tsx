@@ -29,7 +29,16 @@ const Component2Render: Component2RenderMap = {
 };
 
 function ChartComponentDisplay(props: ChartComponentProps) {
-  const { id, type, config, members, group, componentsById, table } = props;
+  const {
+    id,
+    type,
+    config,
+    members,
+    group,
+    componentsById,
+    table,
+    renderForEditor,
+  } = props;
   const Component = Component2Render[type];
 
   return (
@@ -40,6 +49,7 @@ function ChartComponentDisplay(props: ChartComponentProps) {
       members={members}
       table={table}
       componentsById={componentsById}
+      renderForEditor={renderForEditor}
     />
   );
 }

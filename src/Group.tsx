@@ -5,7 +5,7 @@ import ChartComponent from "./ChartComponent";
 import { useChartOps } from "./ChartOperations";
 
 function Group(props: any) {
-  const { id, config, members, componentsById } = props;
+  const { id, config, members, componentsById, renderForEditor } = props;
   const { left, top, width, height, margin, fill, opacity } = config;
   const { setInteractions, selectedComponentId, setSelectedComponent } =
     useChartOps();
@@ -32,8 +32,8 @@ function Group(props: any) {
     <VXGroup
       className={interactClass}
       style={{ pointerEvents: "all" }}
-      top={top}
-      left={left}
+      top={renderForEditor ? top : 0}
+      left={renderForEditor ? left : 0}
     >
       <rect
         width={width}

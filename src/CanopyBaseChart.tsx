@@ -3,48 +3,33 @@ import ChartComponent from "./ChartComponent";
 import { ChartOperationsProvider } from "./ChartOperations";
 import { Chart, ChartComponent as ChartComponentT } from "./types";
 
-interface BoundingBox {
-  minX: number;
-  maxX: number;
-  minY: number;
-  maxY: number;
-}
-
 interface ViewBox {
   width: number;
   height: number;
 }
 
 const viewBox = (chart: Chart): ViewBox => {
-  const bb = Object.values(chart.componentsById).reduce<BoundingBox>(
-    (dims: BoundingBox, component: ChartComponentT) => {
-      const x = typeof component.config.x === "number" ? "x" : "left";
-      const y = typeof component.config.y === "number" ? "y" : "top";
-      const width = component.config.width as number;
-      const height = component.config.height as number;
+  const primaryGroup = Object.values(chart.componentsById).find(
+    (component: any) => component.type === "Group"
+  ) as ChartComponentT;
 
-      return {
-        minX: Math.min(dims.minX, component.config[x] as number),
-        maxX: Math.max(dims.maxX, (component.config[x] as number) + width),
-        minY: Math.min(dims.minY, component.config[y] as number),
-        maxY: Math.max(dims.maxY, (component.config[x] as number) + height),
-      };
-    },
-    {
-      minX: 99999,
-      maxX: 0,
-      minY: 99999,
-      maxY: 0,
-    }
-  );
+  const bb = {
+    minX: primaryGroup.config.left as number,
+    minY: primaryGroup.config.top as number,
+    maxX:
+      (primaryGroup.config.left as number) +
+      (primaryGroup.config.width as number),
+    maxY:
+      (primaryGroup.config.top as number) +
+      (primaryGroup.config.height as number),
+  };
 
-  const { maxX, maxY } = bb;
-  return { width: maxX, height: maxY };
+  const { minX, minY, maxX, maxY } = bb;
+  return { width: maxX - minX, height: maxY - minY };
 };
 
 function BaseChartForEditor(props: any) {
   const { children } = props;
-  // const { setSelectedComponent } = useChartOps();
 
   return (
     <svg
@@ -63,11 +48,7 @@ function BaseChartForRemoteApp(props: any) {
   const vb = viewBox(chart);
 
   return (
-    <svg
-      width="100%"
-      viewBox={`0 0 ${vb.width + 20} ${vb.height + 20}`}
-      preserveAspectRatio="xMinYMin"
-    >
+    <svg width="100%" height="100%" viewBox={`0 0 ${vb.width} ${vb.height}`}>
       {children}
     </svg>
   );
