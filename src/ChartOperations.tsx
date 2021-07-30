@@ -49,64 +49,49 @@ export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
     const interactClass = `interact-${component.id}`;
     const { xField, yField } = options.drag;
 
-    interact(`.${interactClass}`)
-      .resizable({
-        margin: 10,
-        edges: { top: true, left: true, bottom: true, right: true },
-        listeners: {
-          move(event) {
-            const x = component.config[xField] + event.deltaRect.left;
-            const y = component.config[yField] + event.deltaRect.top;
+    interact(`.${interactClass}`).resizable({
+      margin: 30,
+      edges: { top: true, left: true, bottom: true, right: true },
+      listeners: {
+        move(event) {
+          const x =
+            component.config[xField] +
+            event.deltaRect.left / 2 -
+            event.deltaRect.right / 2;
+          const y =
+            component.config[yField] +
+            event.deltaRect.top / 2 -
+            event.deltaRect.bottom / 2;
 
-            setComponentFields(componentId, {
-              [xField]: {
-                $set: x,
-              },
-              [yField]: {
-                $set: y,
-              },
-              width: {
-                $set: parseInt(event.rect.width, 10),
-              },
-              height: {
-                $set: parseInt(event.rect.height, 10),
-              },
-            });
-          },
+          setComponentFields(componentId, {
+            [xField]: {
+              $set: x,
+            },
+            [yField]: {
+              $set: y,
+            },
+            width: {
+              $set: parseInt(event.rect.width, 10),
+            },
+            height: {
+              $set: parseInt(event.rect.height, 10),
+            },
+          });
         },
-        modifiers: [
-          // keep the edges inside the parent
-          // interact.modifiers.restrictEdges({
-          //   outer: "parent",
-          // }),
+      },
+      modifiers: [
+        // keep the edges inside the parent
+        // interact.modifiers.restrictEdges({
+        //   outer: "parent",
+        // }),
 
-          // minimum size
-          interact.modifiers.restrictSize({
-            min: { width: 100, height: 50 },
-          }),
-        ],
-        inertia: false,
-      })
-      .draggable({
-        listeners: {
-          modifiers: [
-            interact.modifiers.restrictRect({
-              restriction: "parent",
-              endOnly: true,
-            }),
-          ],
-          move(event) {
-            setComponentFields(component.id, {
-              [xField]: {
-                $set: Math.round(component.config[xField] + event.dx),
-              },
-              [yField]: {
-                $set: Math.round(component.config[yField] + event.dy),
-              },
-            });
-          },
-        },
-      });
+        // minimum size
+        interact.modifiers.restrictSize({
+          min: { width: 100, height: 50 },
+        }),
+      ],
+      inertia: false,
+    });
 
     return interactClass;
   };

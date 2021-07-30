@@ -51,6 +51,7 @@ export interface Component2RenderMap {
 export interface Chart {
   id: string;
   name: string;
+  color: string
   userId: string;
   createdAt?: Date;
   componentsById: {

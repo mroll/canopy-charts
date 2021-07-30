@@ -6,7 +6,7 @@ import { useChartOps } from "./ChartOperations";
 
 function Group(props: any) {
   const { id, config, members, componentsById } = props;
-  const { left, top, width, height, margin } = config;
+  const { left, top, width, height, margin, fill, opacity } = config;
   const { setInteractions, selectedComponentId, setSelectedComponent } =
     useChartOps();
 
@@ -38,8 +38,8 @@ function Group(props: any) {
       <rect
         width={width}
         height={height}
-        fill="#000033"
-        fillOpacity={0.0}
+        fill={fill}
+        fillOpacity={opacity}
         rx={4}
         className={`hover:stroke-current hover:text-blue-300 hover:stroke-2 ${classIfSelected}`}
         onClick={() => setSelectedComponent(id)}

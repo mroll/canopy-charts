@@ -17,7 +17,7 @@ const table = [
 ];
 
 function App() {
-  const chart1 = "60f1d37e65c742b7100b7f2b";
+  const chart1 = "60f85e3fd9038d2a59e6588a";
 
   return (
     <div

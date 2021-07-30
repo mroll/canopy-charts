@@ -92,6 +92,7 @@ function CanopyBaseChart(props: any) {
             key={componentId}
             table={chart.table}
             componentsById={chart.componentsById}
+            renderForEditor={renderForEditor}
             {...chart.componentsById[componentId]}
           />
         ))}
