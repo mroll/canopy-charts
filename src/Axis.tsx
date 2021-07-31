@@ -20,6 +20,8 @@ function Axis(props: any) {
     numTicks,
     tickLength,
     tickStroke,
+    tickLabelColor,
+    tickLabelFontSize,
     hideTicks,
     hideAxisLine,
     domain,
@@ -96,6 +98,11 @@ function Axis(props: any) {
       stroke={stroke}
       strokeWidth={strokeWidth}
       hideAxisLine={hideAxisLine}
+      tickLabelProps={() => ({
+        fill: tickLabelColor,
+        fontSize: tickLabelFontSize,
+        textAnchor: "middle",
+      })}
     />
   );
 }

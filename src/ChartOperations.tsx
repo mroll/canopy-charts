@@ -93,6 +93,29 @@ export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
       inertia: false,
     });
 
+    if (component.type === "Group") {
+      interact(`.${interactClass}`).draggable({
+        listeners: {
+          modifiers: [
+            interact.modifiers.restrictRect({
+              restriction: "parent",
+              endOnly: true,
+            }),
+          ],
+          move(event) {
+            setComponentFields(component.id, {
+              [xField]: {
+                $set: Math.round(component.config[xField] + event.dx),
+              },
+              [yField]: {
+                $set: Math.round(component.config[yField] + event.dy),
+              },
+            });
+          },
+        },
+      });
+    }
+
     return interactClass;
   };
 

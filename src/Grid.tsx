@@ -1,17 +1,12 @@
 import React, { useMemo } from "react";
-import { Group } from "@visx/group";
 import { scaleBand, scaleLinear, scaleOrdinal } from "@visx/scale";
 import { Grid as VXGrid } from "@visx/grid";
-import { extent } from "d3-array";
 
 import { useChartOps } from "./ChartOperations";
 import { getTableColumn, getTableColumns, useLinearScale } from "./util";
 
-const blue = "#aeeef8";
-export const green = "#e5fd3d";
-
 function Grid(props: any) {
-  const { id, config } = props;
+  const { id, config, group } = props;
   const {
     width,
     height,
@@ -22,7 +17,8 @@ function Grid(props: any) {
     numTickColumns,
     stroke,
     strokeWidth,
-    padding,
+    rowPadding,
+    colPadding,
     X,
     Y,
     defaultX,
@@ -44,51 +40,57 @@ function Grid(props: any) {
     (col: string[]) => col.map((x: string) => x)
   );
 
-  // bounds
-  const xMax = width;
-  const yMax = height;
+  const { minX, maxX, minY, maxY } = {
+    minX: group ? group.margin.l : 0,
+    maxX: group ? group.width - group.margin.r : width,
+    minY: group ? group.margin.t : 0,
+    maxY: group ? group.height - group.margin.b - group.margin.t : height,
+  };
+
+  console.log(minX, maxX, minY, maxY);
 
   const xScale = useMemo(
     () =>
       scaleBand<string>({
-        range: [0, xMax],
+        range: [0, maxX],
         domain: XX,
-        padding: padding,
+        padding: colPadding,
       }),
-    [xMax, XX]
+    [XX, minX, maxX, colPadding]
   );
 
   const yScale = useMemo(() => {
     if (useLinearScale(YY)) {
       const dMax = Math.max(...YY.map((d: string) => parseInt(d, 10)));
 
+      // Not sure why we have to subtract group.margin.b here, or
+      // why we have to set the second param to zero - but apparently
+      // we do.
       return scaleLinear<number>({
-        range: [height, 0],
-        round: true,
+        range: [group.height - group.margin.t - group.margin.b, 0],
         domain: [0, dMax],
       });
     }
 
     return scaleBand<string>({
-      range: [height, 0],
-      round: true,
+      range: [maxY, minY],
       domain: YY,
-      padding: 0.4,
+      padding: rowPadding,
     });
-  }, [height, YY]);
+  }, [YY, minY, maxY, rowPadding]);
 
   return (
     <VXGrid
       className={interactClass}
       xScale={xScale}
       yScale={yScale}
-      width={xMax}
-      height={yMax}
+      width={group ? group.width - group.margin.r - group.margin.l : width}
+      height={group ? group.height - group.margin.t - group.margin.b : height}
       numTicksRows={numTickRows}
       numTicksColumns={numTickColumns}
       fill={fill}
-      left={left}
-      top={top}
+      left={minX}
+      top={minY}
       stroke={stroke}
       strokeWidth={strokeWidth}
     />
