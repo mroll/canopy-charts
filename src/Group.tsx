@@ -18,10 +18,6 @@ function Group(props: any) {
     useGradient,
     gradientFrom,
     gradientTo,
-    gradientFromOffset,
-    gradientFromOpacity,
-    gradientToOffset,
-    gradientToOpacity,
     gradientVertical,
     gradientX1,
     gradientX2,
@@ -63,12 +59,12 @@ function Group(props: any) {
       {useGradient && (
         <LinearGradient
           id={gradientId}
-          from={gradientFrom}
-          to={gradientTo}
-          fromOffset={`${gradientFromOffset}%`}
-          fromOpacity={gradientFromOpacity}
-          toOffset={`${gradientToOffset}%`}
-          toOpacity={gradientToOpacity}
+          from={gradientFrom.color}
+          fromOffset={`${gradientFrom.offset}%`}
+          fromOpacity={gradientFrom.opacity}
+          to={gradientTo.color}
+          toOffset={`${gradientTo.offset}%`}
+          toOpacity={gradientTo.opacity}
           vertical={gradientVertical}
           /* x1={gradientX1} */
           /* x2={gradientX2} */
