@@ -10,6 +10,13 @@ function RenderGradient(props: any) {
   const { x, y, width, height, fill, rx, gradient } = config;
   const { setInteractions } = useChartOps();
 
+  const { minX, maxX, minY, maxY } = {
+    minX: group ? group.margin.l : 0,
+    maxX: group ? group.width - group.margin.r : width,
+    minY: group ? group.margin.t : 0,
+    maxY: group ? group.height - group.margin.b : height,
+  };
+
   const interactClass = setInteractions(id, {
     drag: {
       xField: "x",
@@ -24,10 +31,10 @@ function RenderGradient(props: any) {
       <Gradient id={id} />
       <rect
         className={interactClass}
-        x={x}
-        y={y}
-        width={group ? group.width : width}
-        height={group ? group.height : height}
+        x={minX}
+        y={minY}
+        width={group ? group.width - group.margin.l - group.margin.r : width}
+        height={group ? group.height - group.margin.t - group.margin.b : height}
         fill={fill}
         rx={rx}
       />

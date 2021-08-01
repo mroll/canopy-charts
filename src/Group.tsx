@@ -1,12 +1,33 @@
 import React from "react";
 import { Group as VXGroup } from "@visx/group";
+import { LinearGradient } from "@visx/gradient";
 
 import ChartComponent from "./ChartComponent";
 import { useChartOps } from "./ChartOperations";
 
 function Group(props: any) {
   const { id, config, members, componentsById, renderForEditor } = props;
-  const { left, top, width, height, margin, fill, opacity } = config;
+  const {
+    left,
+    top,
+    width,
+    height,
+    margin,
+    fill,
+    opacity,
+    useGradient,
+    gradientFrom,
+    gradientTo,
+    gradientFromOffset,
+    gradientFromOpacity,
+    gradientToOffset,
+    gradientToOpacity,
+    gradientVertical,
+    gradientX1,
+    gradientX2,
+    gradientY1,
+    gradientY2,
+  } = config;
   const { setInteractions, selectedComponentId, setSelectedComponent } =
     useChartOps();
 
@@ -25,9 +46,13 @@ function Group(props: any) {
     },
   });
 
-  const classIfSelected =
-    selectedComponentId === id ? "stroke-current text-blue-300 stroke-2" : "";
+  const classIfSelected = renderForEditor
+    ? selectedComponentId === id
+      ? "stroke-current text-blue-300 stroke-2"
+      : ""
+    : "";
 
+  const gradientId = `component-${id}-gradient`;
   return (
     <VXGroup
       className={interactClass}
@@ -35,10 +60,26 @@ function Group(props: any) {
       top={renderForEditor ? top : 0}
       left={renderForEditor ? left : 0}
     >
+      {useGradient && (
+        <LinearGradient
+          id={gradientId}
+          from={gradientFrom}
+          to={gradientTo}
+          fromOffset={`${gradientFromOffset}%`}
+          fromOpacity={gradientFromOpacity}
+          toOffset={`${gradientToOffset}%`}
+          toOpacity={gradientToOpacity}
+          vertical={gradientVertical}
+          /* x1={gradientX1} */
+          /* x2={gradientX2} */
+          /* y1={gradientY1} */
+          /* y2={gradientY2} */
+        />
+      )}
       <rect
         width={width}
         height={height}
-        fill={fill}
+        fill={useGradient ? `url(#${gradientId})` : fill}
         fillOpacity={opacity}
         rx={4}
         className={`hover:stroke-current hover:text-blue-300 hover:stroke-2 ${classIfSelected}`}

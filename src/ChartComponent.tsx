@@ -2,6 +2,7 @@ import React from "react";
 
 import RenderCurve from "./Curve";
 import RenderAxis from "./Axis";
+import RenderAreaClosed from "./AreaClosed";
 import RenderRect from "./Rect";
 import RenderGradient from "./Gradient";
 import RenderBar from "./Bar";
@@ -23,6 +24,7 @@ const Component2Render: Component2RenderMap = {
   [ComponentType.BarGroup]: RenderBarGroup,
   [ComponentType.Curve]: RenderCurve,
   [ComponentType.Axis]: RenderAxis,
+  [ComponentType.AreaClosed]: RenderAreaClosed,
   [ComponentType.Rect]: RenderRect,
   [ComponentType.Group]: RenderGroup,
   [ComponentType.Grid]: RenderGrid,

@@ -47,8 +47,6 @@ function Grid(props: any) {
     maxY: group ? group.height - group.margin.b - group.margin.t : height,
   };
 
-  console.log(minX, maxX, minY, maxY);
-
   const xScale = useMemo(
     () =>
       scaleBand<string>({

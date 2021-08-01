@@ -8,6 +8,8 @@ interface ViewBox {
   height: number;
 }
 
+const noop = () => {};
+
 const viewBox = (chart: Chart): ViewBox => {
   const primaryGroup = Object.values(chart.componentsById).find(
     (component: any) => component.type === "Group"
@@ -64,7 +66,7 @@ function CanopyBaseChart(props: any) {
   return (
     <ChartOperationsProvider
       chart={chart}
-      setChart={setChart}
+      setChart={setChart || noop}
       renderForEditor={renderForEditor}
     >
       <BaseChartComponent chart={chart}>

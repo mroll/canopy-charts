@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 
 export const ComponentType = {
   Axis: "Axis",
+  AreaClosed: "AreaClosed",
   Bar: "Bar",
   Bars: "Bars",
   BarGroup: "BarGroup",
