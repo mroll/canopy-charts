@@ -1,9 +1,10 @@
 import React, { useMemo } from "react";
 import * as allCurves from "@visx/curve";
-import { scaleBand, scaleLinear } from "@visx/scale";
+import { scaleTime, scaleBand, scaleLinear } from "@visx/scale";
 import { Group } from "@visx/group";
 import { AreaClosed } from "@visx/shape";
 import { LinearGradient } from "@visx/gradient";
+import { extent } from "d3-array";
 
 import { useChartOps } from "./ChartOperations";
 import { getTableColumn, useLinearScale } from "./util";
@@ -68,6 +69,7 @@ function RenderAreaClosed(props: any) {
   }));
   const getXVal = (d: any) => d.label;
   const getYVal = (d: any) => d.value;
+  const getDate = (d: any) => new Date(getXVal(d));
 
   const { minX, maxX, minY, maxY } = {
     minX: group ? group.margin.l : 0,
@@ -86,6 +88,16 @@ function RenderAreaClosed(props: any) {
       }),
     [XX, minX, maxX, XX, padding]
   );
+
+  const dateScale = useMemo(
+    () =>
+      scaleTime({
+        range: [minX, maxX],
+        domain: extent(lineData, getDate) as [Date, Date],
+      }),
+    [minX, maxX, XX]
+  );
+
   const yScale = useMemo(() => {
     if (useLinearScale(YY)) {
       const dMax = Math.max(...YY.map((d: string) => parseInt(d, 10)));
@@ -134,7 +146,7 @@ function RenderAreaClosed(props: any) {
       <AreaClosed
         curve={areaClosedCurves[curve as CurveType]}
         data={lineData}
-        x={(d) => (xScale(getXVal(d)) ?? 0) + xScale.bandwidth() / 2}
+        x={(d) => dateScale(getDate(d)) ?? 0}
         y={(d) => yScale(getYVal(d)) ?? 0}
         yScale={yScale}
         stroke={stroke}

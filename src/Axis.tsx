@@ -1,10 +1,11 @@
 import React, { useMemo } from "react";
-import { scaleBand, scaleLinear } from "@visx/scale";
+import { scaleBand, scaleLinear, scaleTime } from "@visx/scale";
 import { Axis as VXAxis } from "@visx/axis";
 import { extent } from "d3-array";
 
 import { useChartOps } from "./ChartOperations";
-import { getTableColumns, useLinearScale } from "./util";
+import { getTableColumns } from "./util";
+import { TableColumn, TableData } from "./types";
 
 function Axis(props: any) {
   const { id, config, group } = props;
@@ -30,9 +31,12 @@ function Axis(props: any) {
 
   const chartTable = getChartTable();
 
+  const dType = domain
+    ? chartTable?.head?.find((col) => col.name === domain)?.type
+    : null;
   const DD = (
     domain ? getTableColumns(chartTable, domain) : [["a", "b", "c"]]
-  ).flatMap((col: string[]) => col.map((x: string) => x));
+  ).flatMap((col: TableColumn) => col.map((x: TableData) => x));
 
   const isHorizontal = ["bottom", "top"].includes(orientation);
 
@@ -43,23 +47,34 @@ function Axis(props: any) {
     maxY: group ? group.height - group.margin.b : width,
   };
 
+  const date = (d: TableData) => new Date(d).valueOf();
+
   const range: [number, number] = isHorizontal ? [minX, maxX] : [maxY, minY];
   const scale = useMemo(() => {
-    if (useLinearScale(DD)) {
-      const dMax = extent(DD.map((d) => parseInt(d, 10)))[1];
+    if (dType === "Date") {
+      return scaleTime<number>({
+        domain: [Math.min(...DD.map(date)), Math.max(...DD.map(date))],
+        range: [minX, maxX],
+        nice: true,
+      });
+    }
+
+    if (dType === "Number") {
+      const dMax = extent(DD.map((d) => parseInt(d as string, 10)))[1];
 
       return scaleLinear<number>({
         range,
         domain: [0, dMax || 0],
+        nice: true,
       });
     }
 
     return scaleBand<string>({
       range: range,
-      domain: DD,
+      domain: DD as string[],
       padding: padding,
     });
-  }, [width, DD, range, padding]);
+  }, [dType, width, DD, range, padding]);
 
   const interactClass = setInteractions(id, {
     drag: {

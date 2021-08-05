@@ -3,6 +3,7 @@ import React from "react";
 import RenderCurve from "./Curve";
 import RenderAxis from "./Axis";
 import RenderAreaClosed from "./AreaClosed";
+import RenderDifference from "./Difference";
 import RenderRect from "./Rect";
 import RenderGradient from "./Gradient";
 import RenderBar from "./Bar";
@@ -28,6 +29,7 @@ const Component2Render: Component2RenderMap = {
   [ComponentType.Rect]: RenderRect,
   [ComponentType.Group]: RenderGroup,
   [ComponentType.Grid]: RenderGrid,
+  [ComponentType.Difference]: RenderDifference,
 };
 
 function ChartComponentDisplay(props: ChartComponentProps) {

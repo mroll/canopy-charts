@@ -1,9 +1,19 @@
-export const getTableColumn = (t: any[], columnId: string): string[] =>
-    t.map((r: any) => r[columnId]).filter(cell => cell !== "");
+import { ChartTable, TableColumn } from "./types";
 
-export const getTableColumns = (t: any[], columnIds: string[]): string[][] =>
-  columnIds.map((columnId: string) => getTableColumn(t, columnId));
 
-export const useLinearScale = (DD: string[]) => {
-    return DD.map((d) => parseInt(d, 10)).find(isNaN) === undefined
+export const getTableColumn = (
+  t: ChartTable,
+  columnName: string
+): TableColumn => t.body
+    .map(row => row[t.head.findIndex((col) => col.name === columnName)])
+    .filter(cell => cell && cell !== '')
+
+export const getTableColumns = (
+  t: ChartTable,
+  columnNames: string[]
+): TableColumn[] =>
+  columnNames.map((columnId: string) => getTableColumn(t, columnId));
+
+export const useLinearScale = (DD: TableColumn) => {
+  return DD.map((d) => parseInt(d as string, 10)).find(isNaN) === undefined;
 };

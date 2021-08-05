@@ -50,7 +50,7 @@ function Grid(props: any) {
   const xScale = useMemo(
     () =>
       scaleBand<string>({
-        range: [0, maxX],
+        range: [0, group.width - group.margin.l - group.margin.r],
         domain: XX,
         padding: colPadding,
       }),

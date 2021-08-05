@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 export const ComponentType = {
   Axis: "Axis",
   AreaClosed: "AreaClosed",
+  Difference: "Difference",
   Bar: "Bar",
   Bars: "Bars",
   BarGroup: "BarGroup",
@@ -50,6 +51,20 @@ export interface Component2RenderMap {
   [key: string]: any;
 }
 
+export interface TableColumnHeader {
+  type: string;
+  name: string;
+}
+
+export type TableData = string | number | Date
+
+export type TableColumn = Array<TableData>;
+
+export interface ChartTable {
+  head: Array<TableColumnHeader>;
+  body: Array<TableColumn>;
+}
+
 export interface Chart {
   id: string;
   name: string;
@@ -60,7 +75,7 @@ export interface Chart {
     [key: string]: ChartComponent;
   };
   componentsArray: string[];
-  table: Array<any>;
+  table: ChartTable;
   selectedComponentId: string | null;
 }
 
@@ -75,7 +90,7 @@ export interface ChartOperationsContextObject {
   setComponentFields: (componentId: string, ...setters: any[]) => void;
   setInteractions: (componentId: string, options: InteractionOptions) => string;
   setSelectedComponent: (componentId: string | null) => void;
-  getChartTable: () => Array<any>;
+  getChartTable: () => ChartTable;
   selectedComponentId: string;
 }
 
