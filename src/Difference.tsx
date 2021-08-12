@@ -3,14 +3,14 @@ import { Group } from "@visx/group";
 import { LinePath } from "@visx/shape";
 import { curveBasis } from "@visx/curve";
 import { Threshold } from "@visx/threshold";
-import { scaleBand, scaleTime, scaleLinear } from "@visx/scale";
-
-import cityTemperature, {
-  CityTemperature,
-} from "@visx/mock-data/lib/mocks/cityTemperature";
 
 import { useChartOps } from "./ChartOperations";
-import { getTableColumn, getTableColumns, useLinearScale } from "./util";
+import {
+  boundaries,
+  scale as canopyScale,
+  getTableColumn,
+  getTableColumns,
+} from "./util";
 
 function Difference(props: any) {
   const { id, config, group } = props;
@@ -47,41 +47,16 @@ function Difference(props: any) {
   const getY0Val = (d: any) => d.y0Value;
   const getY1Val = (d: any) => d.y1Value;
 
-  const { minX, maxX, minY, maxY } = {
-    minX: group ? group.margin.l : 0,
-    maxX: group ? group.width - group.margin.r : width,
-    minY: group ? group.margin.t : 0,
-    maxY: group ? group.height - group.margin.b : height,
-  };
+  const { minX, maxX, minY, maxY } = boundaries(width, height, group);
 
-  // scales, memoize for performance
-  const xScale = useMemo(() => {
-    if (xType === "Date") {
-      return scaleTime<number>({
-        domain: [
-          Math.min(...lineData.map(getXVal)),
-          Math.max(...lineData.map(getXVal)),
-        ],
-        range: [minX, maxX],
-      });
-    }
-
-    return scaleBand<string>({
-      range: [minX, maxX],
-      domain: XX,
-      padding: padding,
-    });
-  }, [minX, maxX, XX, padding]);
-  const yScale = useMemo(() => {
-    const dMax = YY0
-      ? Math.max(...YY0.concat(YY1).map((d: string) => parseInt(d, 10)))
-      : 0;
-
-    return scaleLinear<number>({
-      range: [maxY, minY],
-      domain: [0, dMax],
-    });
-  }, [YY0, YY1, minY, maxY]);
+  const xScale = useMemo(
+    () => canopyScale([XX], [minX, maxX]),
+    [XX, minX, maxX]
+  );
+  const yScale = useMemo(
+    () => canopyScale([YY0, YY1], [maxY, minY]),
+    [YY0, YY1, minY, maxY]
+  );
 
   return (
     <Group>

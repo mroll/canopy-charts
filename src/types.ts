@@ -24,6 +24,8 @@ export interface ChartComponentConfig {
     | (string | number)[]
     | (string | number)[][]
     | boolean
+    | TableColumn
+    | TableColumn[]
     | null;
 }
 
@@ -58,11 +60,14 @@ export interface TableColumnHeader {
 
 export type TableData = string | number | Date
 
-export type TableColumn = Array<TableData>;
+export type TableColumn = {
+    head: TableColumnHeader,
+    body: Array<TableData>
+};
 
 export interface ChartTable {
   head: Array<TableColumnHeader>;
-  body: Array<TableColumn>;
+  body: Array<Array<TableData>>;
 }
 
 export interface Chart {
@@ -101,4 +106,15 @@ export interface ChartOperationsProviderArgs {
   setChart: ((newChart: Chart) => void) | ((setter: FunctionalSetter) => void);
   renderForEditor: boolean;
   children: JSX.Element | ReactNode;
+}
+
+export interface Group {
+    width: number
+    height: number
+    margin: {
+	t: number
+	b: number
+	l: number
+	r: number
+    }
 }

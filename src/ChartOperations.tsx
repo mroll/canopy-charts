@@ -54,14 +54,8 @@ export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
       edges: { top: true, left: true, bottom: true, right: true },
       listeners: {
         move(event) {
-          const x =
-            component.config[xField] +
-            event.deltaRect.left / 2 -
-            event.deltaRect.right / 2;
-          const y =
-            component.config[yField] +
-            event.deltaRect.top / 2 -
-            event.deltaRect.bottom / 2;
+          const x = component.config[xField] + event.deltaRect.left;
+          const y = component.config[yField] + event.deltaRect.top;
 
           setComponentFields(componentId, {
             [xField]: {

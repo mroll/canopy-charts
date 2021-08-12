@@ -4,7 +4,7 @@ import { Group } from "@visx/group";
 import { scaleBand, scaleLinear } from "@visx/scale";
 
 import { useChartOps } from "./ChartOperations";
-import { getTableColumn, useLinearScale } from "./util";
+import { boundaries, scale as canopyScale, getTableColumn } from "./util";
 
 function RenderBars(props: any) {
   const { id, config, group } = props;
@@ -37,14 +37,8 @@ function RenderBars(props: any) {
   const xMax = group ? group.width - group.margin.r : width;
   const yMax = group ? group.height - group.margin.b : height;
 
-  const { minX, maxX, minY, maxY } = {
-    minX: group ? group.margin.l : 0,
-    maxX: group ? group.width - group.margin.r : width,
-    minY: group ? group.margin.t : 0,
-    maxY: group ? group.height - group.margin.b : height,
-  };
+  const { minX, maxX, minY, maxY } = boundaries(width, height, group);
 
-  // scales, memoize for performance
   const xScale = useMemo(
     () =>
       scaleBand<string>({
@@ -54,22 +48,10 @@ function RenderBars(props: any) {
       }),
     [XX, minX, maxX, padding]
   );
-  const yScale = useMemo(() => {
-    if (useLinearScale(YY)) {
-      const dMax = Math.max(...YY.map((d: string) => parseInt(d, 10)));
-
-      return scaleLinear<number>({
-        range: [maxY, minY],
-        domain: [0, dMax],
-      });
-    }
-
-    return scaleBand<string>({
-      range: [maxY, minY],
-      domain: YY,
-      padding: 0.4,
-    });
-  }, [height, YY, minY, maxY]);
+  const yScale = useMemo(
+    () => canopyScale([YY], [maxY, minY]),
+    [YY, minY, maxY]
+  );
 
   const interactClass = group
     ? ""

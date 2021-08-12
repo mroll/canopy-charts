@@ -1,7 +1,9 @@
 import React from "react";
+
 import ChartComponent from "./ChartComponent";
 import { ChartOperationsProvider } from "./ChartOperations";
 import { Chart, ChartComponent as ChartComponentT } from "./types";
+import { useChartOps } from "./ChartOperations";
 
 interface ViewBox {
   width: number;
@@ -31,13 +33,25 @@ const viewBox = (chart: Chart): ViewBox => {
 };
 
 function BaseChartForEditor(props: any) {
-  const { children } = props;
+  const { chart, children } = props;
+  const { setSelectedComponent } = useChartOps();
+
+  const onChartClick = (e: any) => {
+    const groupId = Object.keys(chart.componentsById).find((componentId) => {
+      return chart.componentsById[componentId].type === "Group";
+    });
+
+    if (groupId) {
+      setSelectedComponent(groupId);
+    }
+  };
 
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
       style={{ width: "100%", height: "100%" }}
+      onClick={onChartClick}
     >
       {children}
     </svg>

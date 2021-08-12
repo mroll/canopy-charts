@@ -1,11 +1,15 @@
 import React, { useMemo } from "react";
 import * as allCurves from "@visx/curve";
 import { Group } from "@visx/group";
-import { scaleBand, scaleLinear } from "@visx/scale";
 import { LinePath } from "@visx/shape";
 
 import { useChartOps } from "./ChartOperations";
-import { getTableColumn, useLinearScale } from "./util";
+import {
+  boundaries,
+  getTableColumn,
+  isBandScale,
+  scale as canopyScale,
+} from "./util";
 
 type CurveType = keyof typeof allCurves;
 
@@ -39,39 +43,17 @@ function RenderCurve(props: any) {
   const getXVal = (d: any) => d.label;
   const getYVal = (d: any) => d.value;
 
-  const { minX, maxX, minY, maxY } = {
-    minX: group ? group.margin.l : 0,
-    maxX: group ? group.width - group.margin.r : width,
-    minY: group ? group.margin.t : 0,
-    maxY: group ? group.height - group.margin.b : height,
-  };
+  const { minX, maxX, minY, maxY } = boundaries(width, height, group);
 
-  // scales, memoize for performance
   const xScale = useMemo(
-    () =>
-      scaleBand<string>({
-        range: [minX, maxX],
-        domain: XX,
-        padding: padding,
-      }),
-    [XX, minX, maxX, XX, padding]
+    () => canopyScale([XX], [minX, maxX], padding),
+    [XX, minX, maxX, padding]
   );
-  const yScale = useMemo(() => {
-    if (useLinearScale(YY)) {
-      const dMax = Math.max(...YY.map((d: string) => parseInt(d, 10)));
 
-      return scaleLinear<number>({
-        range: [maxY, minY],
-        domain: [0, dMax],
-      });
-    }
-
-    return scaleBand<string>({
-      range: [maxY, minY],
-      domain: YY,
-      padding: 0.4,
-    });
-  }, [height, YY, minY, maxY]);
+  const yScale = useMemo(
+    () => canopyScale([YY], [maxY, minY]),
+    [YY, minY, maxY]
+  );
 
   const interactClass = group
     ? ""
@@ -87,7 +69,10 @@ function RenderCurve(props: any) {
       <LinePath
         curve={allCurves[curve as CurveType]}
         data={lineData}
-        x={(d) => (xScale(getXVal(d)) ?? 0) + xScale.bandwidth() / 2}
+        x={(d) =>
+          (xScale(getXVal(d)) ?? 0) +
+          (isBandScale(xScale) ? xScale.bandwidth() / 2 : 0)
+        }
         y={(d) => yScale(getYVal(d)) ?? 0}
         stroke={stroke}
         strokeWidth={strokeWidth}

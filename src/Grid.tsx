@@ -3,7 +3,12 @@ import { scaleBand, scaleLinear, scaleOrdinal } from "@visx/scale";
 import { Grid as VXGrid } from "@visx/grid";
 
 import { useChartOps } from "./ChartOperations";
-import { getTableColumn, getTableColumns, useLinearScale } from "./util";
+import {
+  boundaries,
+  scale as canopyScale,
+  getTableColumn,
+  getTableColumns,
+} from "./util";
 
 function Grid(props: any) {
   const { id, config, group } = props;
@@ -36,46 +41,20 @@ function Grid(props: any) {
   });
 
   const XX = X ? getTableColumn(chartTable, X) : defaultX;
-  const YY = (Y ? getTableColumns(chartTable, Y) : defaultY).flatMap(
-    (col: string[]) => col.map((x: string) => x)
-  );
+  const YY = Y ? getTableColumns(chartTable, Y) : defaultY;
 
-  const { minX, maxX, minY, maxY } = {
-    minX: group ? group.margin.l : 0,
-    maxX: group ? group.width - group.margin.r : width,
-    minY: group ? group.margin.t : 0,
-    maxY: group ? group.height - group.margin.b - group.margin.t : height,
-  };
+  const { minX, maxX, minY, maxY } = boundaries(width, height, group);
 
-  const xScale = useMemo(
-    () =>
-      scaleBand<string>({
-        range: [0, group.width - group.margin.l - group.margin.r],
-        domain: XX,
-        padding: colPadding,
-      }),
-    [XX, minX, maxX, colPadding]
-  );
-
-  const yScale = useMemo(() => {
-    if (useLinearScale(YY)) {
-      const dMax = Math.max(...YY.map((d: string) => parseInt(d, 10)));
-
-      // Not sure why we have to subtract group.margin.b here, or
-      // why we have to set the second param to zero - but apparently
-      // we do.
-      return scaleLinear<number>({
-        range: [group.height - group.margin.t - group.margin.b, 0],
-        domain: [0, dMax],
-      });
-    }
-
-    return scaleBand<string>({
-      range: [maxY, minY],
-      domain: YY,
-      padding: rowPadding,
-    });
-  }, [YY, minY, maxY, rowPadding]);
+  const xRange: [number, number] = [
+    0,
+    group.width - group.margin.l - group.margin.r,
+  ];
+  const yRange: [number, number] =
+    YY[0].head.type === "Number"
+      ? [group.height - group.margin.t - group.margin.b, 0]
+      : [maxY, minY];
+  const xScale = useMemo(() => canopyScale([XX], xRange), [XX, xRange]);
+  const yScale = useMemo(() => canopyScale(YY, yRange), [YY, yRange]);
 
   return (
     <VXGrid

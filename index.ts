@@ -4,6 +4,7 @@ import {
   ComponentType,
   ChartTable,
   TableData,
+  TableColumn,
   TableColumnHeader,
 } from "./src/types";
 import CanopyChart from "./src/CanopyChart";
@@ -16,6 +17,7 @@ export {
   CanopyChart,
   CanopyBaseChart,
   ChartTable,
+  TableColumn,
   TableColumnHeader,
   TableData,
 };
