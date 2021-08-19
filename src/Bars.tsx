@@ -43,7 +43,7 @@ function RenderBars(props: any) {
     () =>
       scaleBand<string>({
         range: [minX, maxX],
-        domain: XX,
+        domain: XX.body,
         padding: padding,
       }),
     [XX, minX, maxX, padding]
@@ -62,19 +62,21 @@ function RenderBars(props: any) {
         },
       });
 
-  const classIfSelected =
-    selectedComponentId === id ? "stroke-current text-blue-300 stroke-2" : "";
+  // const classIfSelected =
+  //   selectedComponentId === id ? "stroke-current text-blue-300 stroke-2" : "";
 
   return (
     <Group
-      className={`${interactClass} hover:stroke-current hover:text-blue-300 hover:stroke-2 ${classIfSelected}`}
+      className={
+        "${interactClass} hover:stroke-current hover:text-blue-300 hover:stroke-2"
+      }
       top={top}
       left={left}
       onClick={() => setSelectedComponent(id)}
     >
-      {XX.map((xVal: string, idx: number) => {
+      {XX.body.map((xVal: string, idx: number) => {
         const barWidth = xScale.bandwidth();
-        const barHeight = yMax - (yScale(YY[idx]) ?? 0);
+        const barHeight = yMax - (yScale(YY.body[idx]) ?? 0);
         const barX = xScale(xVal);
         const barY = yMax - barHeight;
 

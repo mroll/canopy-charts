@@ -34,13 +34,17 @@ function RenderCurve(props: any) {
 
   const chartTable = getChartTable();
 
+  const xType = X
+    ? chartTable?.head?.find((col) => col.name === X)?.type
+    : null;
   const XX = X ? getTableColumn(chartTable, X) : defaultX;
   const YY = Y ? getTableColumn(chartTable, Y) : defaultY;
-  const lineData = XX.map((x: string | number, idx: number) => ({
+  const lineData = XX.body.map((x: string | number, idx: number) => ({
     label: x,
-    value: idx < YY.length ? YY[idx] : 0,
+    value: idx < YY.body.length ? YY.body[idx] : 0,
   }));
-  const getXVal = (d: any) => d.label;
+  const getXVal = (d: any) =>
+    xType === "Date" ? new Date(d.label).valueOf() : d.label;
   const getYVal = (d: any) => d.value;
 
   const { minX, maxX, minY, maxY } = boundaries(width, height, group);

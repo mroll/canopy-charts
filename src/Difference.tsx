@@ -36,11 +36,12 @@ function Difference(props: any) {
     ? chartTable?.head?.find((col) => col.name === X)?.type
     : null;
   const XX = X ? getTableColumn(chartTable, X) : defaultX;
-  const [YY0, YY1] = Y ? getTableColumns(chartTable, Y) : defaultY;
-  const lineData = XX.map((x: string | number, idx: number) => ({
+  const [YY0, YY1] =
+    Y && Y.length === 2 ? getTableColumns(chartTable, Y) : defaultY;
+  const lineData = XX.body.map((x: string | number, idx: number) => ({
     label: x,
-    y0Value: YY0 && idx < YY0.length ? YY0[idx] : 0,
-    y1Value: YY1 && idx < YY1.length ? YY1[idx] : 0,
+    y0Value: YY0 && idx < YY0.body.length ? YY0.body[idx] : 0,
+    y1Value: YY1 && idx < YY1.body.length ? YY1.body[idx] : 0,
   }));
   const getXVal = (d: any) =>
     xType === "Date" ? new Date(d.label).valueOf() : d.label;
@@ -70,12 +71,12 @@ function Difference(props: any) {
         clipBelowTo={maxY}
         curve={curveBasis}
         belowAreaProps={{
-          fill: "violet",
-          fillOpacity: 0.4,
+          fill: belowArea.fill,
+          fillOpacity: belowArea.opacity,
         }}
         aboveAreaProps={{
-          fill: "green",
-          fillOpacity: 0.4,
+          fill: aboveArea.fill,
+          fillOpacity: aboveArea.opacity,
         }}
       />
       <LinePath
