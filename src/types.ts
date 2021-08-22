@@ -14,21 +14,21 @@ export const ComponentType = {
   Rect: "Rect",
 };
 
-
-type ComponentAttributeValue = string
-    | number
-    | {
-        [key: string]: ComponentAttributeValue;
-      }
-    | (string | number)[]
-    | (string | number)[][]
-    | boolean
-    | TableColumn
-    | TableColumn[]
-    | null
+type ComponentAttributeValue =
+  | string
+  | number
+  | {
+      [key: string]: ComponentAttributeValue;
+    }
+  | (string | number)[]
+  | (string | number)[][]
+  | boolean
+  | TableColumn
+  | TableColumn[]
+  | null;
 
 export interface ChartComponentConfig {
-  [key: string]: ComponentAttributeValue
+  [key: string]: ComponentAttributeValue;
 }
 
 export interface ChartComponent {
@@ -60,11 +60,11 @@ export interface TableColumnHeader {
   name: string;
 }
 
-export type TableData = string | number | Date
+export type TableData = string | number | Date;
 
 export type TableColumn = {
-    head: TableColumnHeader,
-    body: Array<TableData>
+  head: TableColumnHeader;
+  body: Array<TableData>;
 };
 
 export interface ChartTable {
@@ -98,6 +98,8 @@ export interface ChartOperationsContextObject {
   setInteractions: (componentId: string, options: InteractionOptions) => string;
   setSelectedComponent: (componentId: string | null) => void;
   getChartTable: () => ChartTable;
+  getXColumns: () => string[];
+  getYColumns: () => string[];
   selectedComponentId: string;
 }
 
@@ -111,12 +113,12 @@ export interface ChartOperationsProviderArgs {
 }
 
 export interface Group {
-    width: number
-    height: number
-    margin: {
-	t: number
-	b: number
-	l: number
-	r: number
-    }
+  width: number;
+  height: number;
+  margin: {
+    t: number;
+    b: number;
+    l: number;
+    r: number;
+  };
 }

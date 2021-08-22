@@ -19,13 +19,13 @@ function Axis(props: any) {
     ticks,
     tickTransform,
     showAxis,
-    domain,
   } = config;
-  const { setInteractions, getChartTable } = useChartOps();
-
+  const { setInteractions, getChartTable, getXColumns, getYColumns } =
+    useChartOps();
   const chartTable = getChartTable();
-
   const isHorizontal = ["bottom", "top"].includes(orientation);
+  const domain = isHorizontal ? getXColumns() : getYColumns();
+
   const columns = domain
     ? getTableColumns(chartTable, domain)
     : [

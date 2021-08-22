@@ -7,6 +7,7 @@ import { useChartOps } from "./ChartOperations";
 import {
   boundaries,
   getTableColumn,
+  getTableColumns,
   isBandScale,
   scale as canopyScale,
 } from "./util";
@@ -30,7 +31,8 @@ function RenderCurve(props: any) {
     strokeWidth,
     strokeOpacity,
   } = config;
-  const { setInteractions, getChartTable } = useChartOps();
+  const { setInteractions, getChartTable, getXColumns, getYColumns } =
+    useChartOps();
 
   const chartTable = getChartTable();
 
@@ -49,13 +51,16 @@ function RenderCurve(props: any) {
 
   const { minX, maxX, minY, maxY } = boundaries(width, height, group);
 
+  const xColumns = getTableColumns(chartTable, getXColumns());
+  const yColumns = getTableColumns(chartTable, getYColumns());
+
   const xScale = useMemo(
-    () => canopyScale([XX], [minX, maxX], padding),
+    () => canopyScale(xColumns, [minX, maxX], padding),
     [XX, minX, maxX, padding]
   );
 
   const yScale = useMemo(
-    () => canopyScale([YY], [maxY, minY]),
+    () => canopyScale(yColumns, [maxY, minY]),
     [YY, minY, maxY]
   );
 

@@ -124,11 +124,37 @@ export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
 
   const getChartTable = () => chart.table;
 
+  const getXColumns = () => {
+    return Array.from(
+      new Set(
+        Object.values(chart.componentsById)
+          .flatMap((component) => {
+            return component.config.X;
+          })
+          .filter((x) => x)
+      )
+    );
+  };
+
+  const getYColumns = () => {
+    return Array.from(
+      new Set(
+        Object.values(chart.componentsById)
+          .flatMap((component) => {
+            return component.config.Y;
+          })
+          .filter((x) => x)
+      )
+    );
+  };
+
   const context = {
     setComponentFields,
     setInteractions,
     setSelectedComponent,
     getChartTable,
+    getXColumns,
+    getYColumns,
     selectedComponentId,
   };
   const { children } = args;
