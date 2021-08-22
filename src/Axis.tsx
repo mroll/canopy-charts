@@ -74,6 +74,7 @@ function Axis(props: any) {
         stroke: label.stroke,
         strokeWidth: label.strokeWidth,
         fontFamily: label.fontFamily,
+        textAnchor: label.anchor,
       }}
       orientation={orientation}
       top={axisTop}
