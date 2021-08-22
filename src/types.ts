@@ -14,19 +14,21 @@ export const ComponentType = {
   Rect: "Rect",
 };
 
-export interface ChartComponentConfig {
-  [key: string]:
-    | string
+
+type ComponentAttributeValue = string
     | number
     | {
-        [key: string]: string | number;
+        [key: string]: ComponentAttributeValue;
       }
     | (string | number)[]
     | (string | number)[][]
     | boolean
     | TableColumn
     | TableColumn[]
-    | null;
+    | null
+
+export interface ChartComponentConfig {
+  [key: string]: ComponentAttributeValue
 }
 
 export interface ChartComponent {

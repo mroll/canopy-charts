@@ -8,7 +8,6 @@ function Axis(props: any) {
   const { id, config, group } = props;
   const {
     label,
-    labelOffset,
     orientation,
     width,
     left,
@@ -16,14 +15,10 @@ function Axis(props: any) {
     padding,
     stroke,
     strokeWidth,
-    numTicks,
-    tickLength,
-    tickStroke,
-    tickLabelColor,
-    tickLabelFontSize,
+    showTicks,
+    ticks,
     tickTransform,
-    hideTicks,
-    hideAxisLine,
+    showAxis,
     domain,
   } = config;
   const { setInteractions, getChartTable } = useChartOps();
@@ -72,26 +67,32 @@ function Axis(props: any) {
   return (
     <VXAxis
       axisClassName={interactClass}
-      label={label}
-      labelOffset={labelOffset}
+      label={label.label}
+      labelOffset={label.offset}
+      labelProps={{
+        fontSize: label.fontSize,
+        stroke: label.stroke,
+        strokeWidth: label.strokeWidth,
+        fontFamily: label.fontFamily,
+      }}
       orientation={orientation}
       top={axisTop}
       left={axisLeft}
       scale={axisScale}
-      numTicks={numTicks}
-      tickLength={tickLength}
-      tickStroke={tickStroke}
-      hideTicks={hideTicks}
+      numTicks={ticks.number}
+      tickLength={ticks.length}
+      tickStroke={ticks.stroke}
+      hideTicks={!showTicks}
       stroke={stroke}
       strokeWidth={strokeWidth}
-      hideAxisLine={hideAxisLine}
-      tickLabelProps={(value, index, values: any) => {
+      hideAxisLine={!showAxis}
+      tickLabelProps={() => {
         const transform = `translate(${tickTransform.x}, ${tickTransform.y})`;
 
         return {
-          fill: tickLabelColor,
-          fontSize: tickLabelFontSize,
-          textAnchor: "middle",
+          fill: ticks.labelColor,
+          fontSize: ticks.fontSize,
+          textAnchor: ticks.anchor,
           transform,
         };
       }}
