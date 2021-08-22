@@ -29,7 +29,8 @@ function Grid(props: any) {
     defaultX,
     defaultY,
   } = config;
-  const { setInteractions, getChartTable } = useChartOps();
+  const { setInteractions, getChartTable, getXColumns, getYColumns } =
+    useChartOps();
 
   const chartTable = getChartTable();
 
@@ -40,8 +41,12 @@ function Grid(props: any) {
     },
   });
 
-  const XX = X ? getTableColumn(chartTable, X) : defaultX;
-  const YY = Y ? getTableColumns(chartTable, Y) : defaultY;
+  const xColumns = getXColumns();
+  const yColumns = getYColumns();
+  const XX =
+    xColumns.length > 0 ? getTableColumns(chartTable, xColumns) : defaultX;
+  const YY =
+    yColumns.length > 0 ? getTableColumns(chartTable, getYColumns()) : defaultY;
 
   const { minX, maxX, minY, maxY } = boundaries(width, height, group);
 
@@ -53,7 +58,7 @@ function Grid(props: any) {
     YY[0].head.type === "Number"
       ? [group.height - group.margin.t - group.margin.b, 0]
       : [maxY, minY];
-  const xScale = useMemo(() => canopyScale([XX], xRange), [XX, xRange]);
+  const xScale = useMemo(() => canopyScale(XX, xRange), [XX, xRange]);
   const yScale = useMemo(() => canopyScale(YY, yRange), [YY, yRange]);
 
   return (
