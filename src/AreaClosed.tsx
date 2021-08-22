@@ -5,7 +5,12 @@ import { AreaClosed } from "@visx/shape";
 import { LinearGradient } from "@visx/gradient";
 
 import { useChartOps } from "./ChartOperations";
-import { boundaries, scale as canopyScale, getTableColumn } from "./util";
+import {
+  isBandScale,
+  boundaries,
+  scale as canopyScale,
+  getTableColumn,
+} from "./util";
 
 const areaClosedCurves = {
   curveBasis: allCurves.curveBasis,
@@ -39,6 +44,7 @@ function RenderAreaClosed(props: any) {
     height,
     stroke,
     fill,
+    fillOpacity,
     padding,
     X,
     Y,
@@ -120,13 +126,17 @@ function RenderAreaClosed(props: any) {
       <AreaClosed
         curve={areaClosedCurves[curve as CurveType]}
         data={lineData}
-        x={(d) => xScale(getXVal(d)) ?? 0}
+        x={(d) =>
+          (xScale(getXVal(d)) ?? 0) +
+          (isBandScale(xScale) ? xScale.bandwidth() / 2 : 0)
+        }
         y={(d) => yScale(getYVal(d)) ?? 0}
         yScale={yScale}
         stroke={stroke}
         strokeWidth={strokeWidth}
         strokeOpacity={strokeOpacity}
         fill={useGradient ? `url(#${gradientId})` : fill}
+        fillOpacity={fillOpacity}
         opacity={1}
       />
     </Group>

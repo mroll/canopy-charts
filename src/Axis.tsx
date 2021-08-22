@@ -1,16 +1,14 @@
 import React, { useMemo } from "react";
-import { scaleBand, scaleLinear, scaleTime } from "@visx/scale";
 import { Axis as VXAxis } from "@visx/axis";
-import { extent } from "d3-array";
 
 import { useChartOps } from "./ChartOperations";
 import { boundaries, scale as canopyScale, getTableColumns } from "./util";
-import { TableColumn, TableData } from "./types";
 
 function Axis(props: any) {
   const { id, config, group } = props;
   const {
     label,
+    labelOffset,
     orientation,
     width,
     left,
@@ -23,6 +21,7 @@ function Axis(props: any) {
     tickStroke,
     tickLabelColor,
     tickLabelFontSize,
+    tickTransform,
     hideTicks,
     hideAxisLine,
     domain,
@@ -74,6 +73,7 @@ function Axis(props: any) {
     <VXAxis
       axisClassName={interactClass}
       label={label}
+      labelOffset={labelOffset}
       orientation={orientation}
       top={axisTop}
       left={axisLeft}
@@ -85,11 +85,16 @@ function Axis(props: any) {
       stroke={stroke}
       strokeWidth={strokeWidth}
       hideAxisLine={hideAxisLine}
-      tickLabelProps={() => ({
-        fill: tickLabelColor,
-        fontSize: tickLabelFontSize,
-        textAnchor: "middle",
-      })}
+      tickLabelProps={(value, index, values: any) => {
+        const transform = `translate(${tickTransform.x}, ${tickTransform.y})`;
+
+        return {
+          fill: tickLabelColor,
+          fontSize: tickLabelFontSize,
+          textAnchor: "middle",
+          transform,
+        };
+      }}
     />
   );
 }
