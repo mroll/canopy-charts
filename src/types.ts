@@ -100,6 +100,10 @@ export interface ChartOperationsContextObject {
   getChartTable: () => ChartTable;
   getXColumns: () => string[];
   getYColumns: () => string[];
+  getChartDimensions: () => {
+    width: number;
+    height: number;
+  };
   selectedComponentId: string;
 }
 
@@ -109,6 +113,8 @@ export interface ChartOperationsProviderArgs {
   chart: Chart;
   setChart: ((newChart: Chart) => void) | ((setter: FunctionalSetter) => void);
   renderForEditor: boolean;
+  width: number;
+  height: number;
   children: JSX.Element | ReactNode;
 }
 

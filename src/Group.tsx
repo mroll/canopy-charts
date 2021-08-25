@@ -19,19 +19,27 @@ function Group(props: any) {
     gradientFrom,
     gradientTo,
     gradientVertical,
-    gradientX1,
-    gradientX2,
-    gradientY1,
-    gradientY2,
+    // gradientX1,
+    // gradientX2,
+    // gradientY1,
+    // gradientY2,
   } = config;
-  const { setInteractions, selectedComponentId, setSelectedComponent } =
-    useChartOps();
+  const {
+    setInteractions,
+    selectedComponentId,
+    setSelectedComponent,
+    getChartDimensions,
+  } = useChartOps();
+
+  const { width: chartWidth, height: chartHeight } = getChartDimensions();
 
   const group = {
     left,
     top,
-    width,
-    height,
+    width: renderForEditor ? width : chartWidth || width,
+    height: renderForEditor ? height : chartHeight || height,
+    // width,
+    // height,
     margin,
   };
 
@@ -73,8 +81,8 @@ function Group(props: any) {
         />
       )}
       <rect
-        width={width}
-        height={height}
+        width={group.width}
+        height={group.height}
         fill={useGradient ? `url(#${gradientId})` : fill}
         fillOpacity={opacity}
         rx={4}

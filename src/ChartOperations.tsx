@@ -17,11 +17,14 @@ const ChartOperationsContext =
     setSelectedComponent: () => {},
     setInteractions: () => "",
     getChartTable: () => [],
+    getXColumns: () => [],
+    getYColumns: () => [],
+    getChartDimensions: () => {},
     selectedComponentId: null,
   });
 
 export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
-  const { chart, setChart, renderForEditor } = args;
+  const { chart, setChart, renderForEditor, width, height } = args;
 
   const setComponentFields = (componentId: string, setters: any): void => {
     // Need to use functional update style otherwise consecutive
@@ -148,6 +151,13 @@ export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
     );
   };
 
+  const getChartDimensions = () => {
+    return {
+      width,
+      height,
+    };
+  };
+
   const context = {
     setComponentFields,
     setInteractions,
@@ -155,6 +165,7 @@ export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
     getChartTable,
     getXColumns,
     getYColumns,
+    getChartDimensions,
     selectedComponentId,
   };
   const { children } = args;

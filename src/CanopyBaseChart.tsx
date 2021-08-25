@@ -1,4 +1,5 @@
 import React from "react";
+import { ParentSize } from "@visx/responsive";
 
 import ChartComponent from "./ChartComponent";
 import { ChartOperationsProvider } from "./ChartOperations";
@@ -12,7 +13,7 @@ interface ViewBox {
 
 const noop = () => {};
 
-const viewBox = (chart: Chart): ViewBox => {
+const viewBox = (chart: Chart, width: number, height: number): ViewBox => {
   const primaryGroup = Object.values(chart.componentsById).find(
     (component: any) => component.type === "Group"
   ) as ChartComponentT;
@@ -29,7 +30,9 @@ const viewBox = (chart: Chart): ViewBox => {
   };
 
   const { minX, minY, maxX, maxY } = bb;
-  return { width: maxX - minX, height: maxY - minY };
+  // return { width: maxX - minX, height: maxY - minY };
+
+  return { width, height };
 };
 
 function BaseChartForEditor(props: any) {
@@ -59,9 +62,9 @@ function BaseChartForEditor(props: any) {
 }
 
 function BaseChartForRemoteApp(props: any) {
-  const { children, chart } = props;
+  const { children, chart, width, height } = props;
 
-  const vb = viewBox(chart);
+  const vb = viewBox(chart, width, height);
 
   return (
     <svg width="100%" height="100%" viewBox={`0 0 ${vb.width} ${vb.height}`}>
@@ -71,30 +74,40 @@ function BaseChartForRemoteApp(props: any) {
 }
 
 function CanopyBaseChart(props: any) {
-  const { chart, setChart, renderForEditor } = props;
+  const { chart, setChart, renderForEditor, width, height } = props;
 
   const BaseChartComponent = renderForEditor
     ? BaseChartForEditor
     : BaseChartForRemoteApp;
 
   return (
-    <ChartOperationsProvider
-      chart={chart}
-      setChart={setChart || noop}
-      renderForEditor={renderForEditor}
-    >
-      <BaseChartComponent chart={chart}>
-        {chart.componentsArray.map((componentId: string) => (
-          <ChartComponent
-            key={componentId}
-            table={chart.table}
-            componentsById={chart.componentsById}
-            renderForEditor={renderForEditor}
-            {...chart.componentsById[componentId]}
-          />
-        ))}
-      </BaseChartComponent>
-    </ChartOperationsProvider>
+    <ParentSize>
+      {(parent) => (
+        <ChartOperationsProvider
+          chart={chart}
+          setChart={setChart || noop}
+          renderForEditor={renderForEditor}
+          width={width || parent.width}
+          height={height || parent.height}
+        >
+          <BaseChartComponent
+            chart={chart}
+            width={width || parent.width}
+            height={height || parent.height}
+          >
+            {chart.componentsArray.map((componentId: string) => (
+              <ChartComponent
+                key={componentId}
+                table={chart.table}
+                componentsById={chart.componentsById}
+                renderForEditor={renderForEditor}
+                {...chart.componentsById[componentId]}
+              />
+            ))}
+          </BaseChartComponent>
+        </ChartOperationsProvider>
+      )}
+    </ParentSize>
   );
 }
 
