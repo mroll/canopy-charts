@@ -4,7 +4,7 @@ import { scaleBand, scaleLinear, scaleOrdinal } from "@visx/scale";
 import { BarGroup as VXBarGroup } from "@visx/shape";
 
 import { useChartOps } from "./ChartOperations";
-import { getTableColumn, getTableColumns } from "./util";
+import { scale as canopyScale, getTableColumn, getTableColumns } from "./util";
 
 const blue = "#aeeef8";
 export const green = "#e5fd3d";
@@ -41,34 +41,30 @@ function BarGroup(props: any) {
   const YY = Y ? getTableColumns(chartTable, Y) : defaultY;
 
   const barGroupData = Y
-    ? XX.map((x0: string, xIdx: number) => ({
+    ? XX.body.map((x0: string, xIdx: number) => ({
         x0,
         ...Y.reduce(
           (acc: any, columnId: string, yIdx: number) => ({
             ...acc,
-            [columnId]: YY[yIdx][xIdx],
+            [columnId]: YY[yIdx].body[xIdx],
           }),
           {}
         ),
       }))
-    : XX.map((x0: string, xIdx: number) => ({
+    : XX.body.map((x0: string, xIdx: number) => ({
         x0,
         ...defaultY.reduce(
-          (acc: any, columnId: string, yIdx: number) => ({
+          (acc: any, column: any, yIdx: number) => ({
             ...acc,
-            [columnId]: YY[yIdx][xIdx],
+            [column.head.name]: YY[yIdx].body[xIdx],
           }),
           {}
         ),
       }));
 
-  const keys = Y || defaultY;
+  const keys = Y || defaultY.map((col: any) => col.head.name);
 
   const getX0 = (d: any) => d.x0;
-
-  // bounds
-  const xMax = group ? group.width - group.margin.r : width;
-  const yMax = group ? group.height - group.margin.b : height;
 
   const { minX, maxX, minY, maxY } = {
     minX: group ? group.margin.l : 0,
@@ -82,7 +78,7 @@ function BarGroup(props: any) {
     () =>
       scaleBand<string>({
         range: [minX, maxX],
-        domain: XX,
+        domain: XX.body,
         padding: outerPadding,
       }),
     [XX, outerPadding]
@@ -96,16 +92,7 @@ function BarGroup(props: any) {
       }),
     [keys, innerPadding]
   );
-  const yScale = scaleLinear<number>({
-    domain: [
-      0,
-      Math.max(
-        ...barGroupData.map((d: any) =>
-          Math.max(...keys.map((key: any) => Number(d[key])))
-        )
-      ),
-    ],
-  });
+  const yScale = useMemo(() => canopyScale(YY, [maxY, minY]), [YY, minY, maxY]);
   const colorScale = scaleOrdinal<string, string>({
     domain: keys,
     range: [blue, green],
@@ -119,7 +106,7 @@ function BarGroup(props: any) {
       <VXBarGroup
         data={barGroupData}
         keys={keys}
-        height={yMax}
+        height={maxY}
         x0={getX0}
         x0Scale={x0Scale}
         x1Scale={x1Scale}
