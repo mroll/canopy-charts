@@ -11,6 +11,7 @@ import RenderBarGroup from "./BarGroup";
 import RenderBars from "./Bars";
 import RenderGroup from "./Group";
 import RenderGrid from "./Grid";
+import RenderPie from "./Pie";
 
 import {
   ChartComponentProps,
@@ -30,6 +31,7 @@ const Component2Render: Component2RenderMap = {
   [ComponentType.Group]: RenderGroup,
   [ComponentType.Grid]: RenderGrid,
   [ComponentType.Difference]: RenderDifference,
+  [ComponentType.Pie]: RenderPie,
 };
 
 function ChartComponentDisplay(props: ChartComponentProps) {

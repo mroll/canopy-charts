@@ -11,6 +11,7 @@ export const ComponentType = {
   Gradient: "Gradient",
   Grid: "Grid",
   Group: "Group",
+  Pie: "Pie",
   Rect: "Rect",
 };
 
