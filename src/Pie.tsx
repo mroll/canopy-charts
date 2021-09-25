@@ -13,6 +13,7 @@ function RenderPie(props: any) {
     width,
     height,
     thickness,
+    fill,
     x,
     y,
     radius,
@@ -50,7 +51,7 @@ function RenderPie(props: any) {
       innerRadius={radius - thickness}
       cornerRadius={rx}
       padAngle={padding}
-      fill="lightblue"
+      fill={fill}
       top={centerY + y}
       left={centerX + x}
     ></Pie>

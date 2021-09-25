@@ -13,6 +13,7 @@ export const ComponentType = {
   Group: "Group",
   Pie: "Pie",
   Rect: "Rect",
+  Title: "Title",
 };
 
 type ComponentAttributeValue =
