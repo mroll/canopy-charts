@@ -6,8 +6,6 @@ function RenderTitle(props: any) {
   const { angle, x, y, dx, dy, font, width, fill, value, verticalAnchor } =
     config;
 
-  console.log(font);
-
   return (
     <Text
       angle={angle}

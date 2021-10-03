@@ -6,7 +6,7 @@ import ChartComponent from "./ChartComponent";
 import { useChartOps } from "./ChartOperations";
 
 function Group(props: any) {
-  const { id, config, members, componentsById, renderForEditor } = props;
+  const { id, config, children, componentsById, renderForEditor } = props;
   const {
     left,
     top,
@@ -24,12 +24,8 @@ function Group(props: any) {
     // gradientY1,
     // gradientY2,
   } = config;
-  const {
-    setInteractions,
-    selectedComponentId,
-    setSelectedComponent,
-    getChartDimensions,
-  } = useChartOps();
+  const { selectedComponentId, setSelectedComponent, getChartDimensions } =
+    useChartOps();
 
   const { width: chartWidth, height: chartHeight } = getChartDimensions();
 
@@ -38,17 +34,8 @@ function Group(props: any) {
     top,
     width: renderForEditor ? width : chartWidth || width,
     height: renderForEditor ? height : chartHeight || height,
-    // width,
-    // height,
     margin,
   };
-
-  const interactClass = setInteractions(id, {
-    drag: {
-      xField: "left",
-      yField: "top",
-    },
-  });
 
   const classIfSelected = renderForEditor
     ? selectedComponentId === id
@@ -58,12 +45,7 @@ function Group(props: any) {
 
   const gradientId = `component-${id}-gradient`;
   return (
-    <VXGroup
-      className={interactClass}
-      style={{ pointerEvents: "all" }}
-      top={renderForEditor ? top : 0}
-      left={renderForEditor ? left : 0}
-    >
+    <VXGroup style={{ pointerEvents: "all" }}>
       {useGradient && (
         <LinearGradient
           id={gradientId}
@@ -86,11 +68,9 @@ function Group(props: any) {
         fill={useGradient ? `url(#${gradientId})` : fill}
         fillOpacity={opacity}
         rx={4}
-        className={`hover:stroke-current hover:text-blue-300 hover:stroke-2 ${classIfSelected}`}
-        onClick={() => setSelectedComponent(id)}
       />
-      {members &&
-        members.map((memberId: string) => (
+      {children &&
+        children.map((memberId: string) => (
           <ChartComponent
             key={memberId}
             id={memberId}

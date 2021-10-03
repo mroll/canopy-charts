@@ -13,6 +13,7 @@ import RenderGroup from "./Group";
 import RenderGrid from "./Grid";
 import RenderPie from "./Pie";
 import RenderTitle from "./Title";
+import RenderDynamicText from "./DynamicText";
 
 import {
   ChartComponentProps,
@@ -34,6 +35,7 @@ const Component2Render: Component2RenderMap = {
   [ComponentType.Difference]: RenderDifference,
   [ComponentType.Pie]: RenderPie,
   [ComponentType.Title]: RenderTitle,
+  [ComponentType.DynamicText]: RenderDynamicText,
 };
 
 function ChartComponentDisplay(props: ChartComponentProps) {
@@ -41,7 +43,7 @@ function ChartComponentDisplay(props: ChartComponentProps) {
     id,
     type,
     config,
-    members,
+    children,
     group,
     componentsById,
     table,
@@ -54,7 +56,7 @@ function ChartComponentDisplay(props: ChartComponentProps) {
       id={id}
       config={config}
       group={group}
-      members={members}
+      children={children}
       table={table}
       componentsById={componentsById}
       renderForEditor={renderForEditor}
@@ -64,7 +66,7 @@ function ChartComponentDisplay(props: ChartComponentProps) {
 
 ChartComponentDisplay.defaultProps = {
   dataId: undefined,
-  members: undefined,
+  children: undefined,
   group: undefined,
 };
 

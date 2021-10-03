@@ -14,6 +14,8 @@ export const ComponentType = {
   Pie: "Pie",
   Rect: "Rect",
   Title: "Title",
+  DynamicText: "DynamicText",
+  Container: "Container",
 };
 
 type ComponentAttributeValue =
@@ -29,9 +31,9 @@ type ComponentAttributeValue =
   | TableColumn[]
   | null;
 
-export interface ChartComponentConfig {
+export type ChartComponentConfig = {
   [key: string]: ComponentAttributeValue;
-}
+};
 
 export interface ChartComponent {
   id: string;
@@ -40,7 +42,7 @@ export interface ChartComponent {
   templateId: string;
   config: ChartComponentConfig;
   dataId?: string;
-  members?: string[];
+  children?: string[];
 }
 
 export interface ChartComponentProps extends ChartComponent {
@@ -78,6 +80,16 @@ export interface Chart {
   id: string;
   name: string;
   color: string;
+  width: number;
+  height: number;
+  top: number;
+  left: number;
+  margin: {
+    t: number;
+    b: number;
+    r: number;
+    l: number;
+  };
   userId: string;
   createdAt?: Date;
   componentsById: {
@@ -96,6 +108,9 @@ export interface InteractionOptions {
 }
 
 export interface ChartOperationsContextObject {
+  setChart: (chart: Chart) => void;
+  setTextHeight: (ref: any) => void;
+  getTextRef: () => any;
   setComponentFields: (componentId: string, ...setters: any[]) => void;
   setInteractions: (componentId: string, options: InteractionOptions) => string;
   setSelectedComponent: (componentId: string | null) => void;
@@ -106,7 +121,9 @@ export interface ChartOperationsContextObject {
     width: number;
     height: number;
   };
+  getContainer: () => ChartComponent | undefined;
   selectedComponentId: string;
+  getComponents: (ids: string[]) => ChartComponent[]
 }
 
 type FunctionalSetter = (prevChart: Chart) => void;

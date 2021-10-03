@@ -30,13 +30,6 @@ function BarGroup(props: any) {
 
   const chartTable = getChartTable();
 
-  const interactClass = setInteractions(id, {
-    drag: {
-      xField: "left",
-      yField: "top",
-    },
-  });
-
   const XX = X ? getTableColumn(chartTable, X) : defaultX;
   const YY = Y ? getTableColumns(chartTable, Y) : defaultY;
 
@@ -81,7 +74,7 @@ function BarGroup(props: any) {
         domain: XX.body,
         padding: outerPadding,
       }),
-    [XX, outerPadding]
+    [minX, maxX, XX, outerPadding]
   );
 
   const x1Scale = useMemo(
@@ -102,7 +95,7 @@ function BarGroup(props: any) {
   yScale.range([maxY, minY]);
 
   return (
-    <Group className={interactClass} top={top} left={left}>
+    <Group top={top} left={left}>
       <VXBarGroup
         data={barGroupData}
         keys={keys}

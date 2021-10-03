@@ -74,6 +74,39 @@ export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
               $set: parseInt(event.rect.height, 10),
             },
           });
+
+          if (component.type === "Container") {
+            const container = component;
+            const primaryGroup = Object.values(chart.componentsById).find(
+              (component: any) => component.type === "Group"
+            ) as ChartComponentT;
+
+            const textRef = chart.textRef;
+            const computedGroupWidth = container
+              ? (container.config.width as number) -
+                ((container.config.margin as { [key: string]: number })
+                  .l as number) -
+                ((container.config.margin as { [key: string]: number })
+                  .r as number)
+              : primaryGroup.config.width;
+            const computedGroupHeight = container
+              ? (container.config.height as number) -
+                ((container.config.margin as { [key: string]: number })
+                  .t as number) -
+                ((container.config.margin as { [key: string]: number })
+                  .b as number) -
+                (textRef ? textRef : 0)
+              : primaryGroup.config.height;
+
+            setComponentFields(primaryGroup.id, {
+              width: {
+                $set: computedGroupWidth,
+              },
+              height: {
+                $set: computedGroupHeight,
+              },
+            });
+          }
         },
       },
       modifiers: [
@@ -90,7 +123,7 @@ export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
       inertia: false,
     });
 
-    if (component.type === "Group") {
+    if (component.type === "Container") {
       interact(`.${interactClass}`).draggable({
         listeners: {
           modifiers: [
@@ -158,7 +191,26 @@ export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
     };
   };
 
+  const getContainer = () =>
+    Object.values(chart.componentsById).find(
+      (component: any) => component.type === "Container"
+    );
+
+  const getTextRef = () => chart.textRef;
+
+  const setTextHeight = (ref: any) =>
+    setChart({
+      ...chart,
+      textRef: ref,
+    });
+
+  const getComponents = (ids: string[]) =>
+    ids.map((id) => chart.componentsById[id]);
+
   const context = {
+    setChart,
+    setTextHeight,
+    getTextRef,
     setComponentFields,
     setInteractions,
     setSelectedComponent,
@@ -166,7 +218,9 @@ export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
     getXColumns,
     getYColumns,
     getChartDimensions,
+    getContainer,
     selectedComponentId,
+    getComponents,
   };
   const { children } = args;
 
