@@ -78,8 +78,9 @@ function BaseChartForEditor(props: any) {
 
   return primaryGroup && container ? (
     <div
-      className={`${interactClass} absolute`}
+      className={interactClass}
       style={{
+        position: "absolute",
         backgroundColor: container.config.fill,
         width: container.config.width,
         height: container.config.height,

@@ -1,9 +1,10 @@
 {
   "name": "canopy-charts",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "description": "Canopy Charts API wrapper",
   "main": "dist/bundle.js",
   "scripts": {
+    "build": "npx webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
