@@ -20,9 +20,29 @@ const nthDatapointFn = (n: number) => {
   };
 };
 
+const nthDeltaFn = (n: number) => {
+  return (table: ChartTable, columnName?: string) => {
+    const column = getTableColumn(table, columnName || "");
+    if (column.head.type !== "Number") {
+      return "";
+    }
+
+    return (
+      "" +
+      Math.round(
+        10000 *
+          ((column.body[n >= 0 ? n + 1 : column.body.length + n] as number) -
+            (column.body[n >= 0 ? n : column.body.length + (n - 1)] as number))
+      ) /
+        10000
+    );
+  };
+};
+
 const tagFunctionMap: TagFunctionMap = {
   lastDatapoint: nthDatapointFn(-1),
   secondToLastDatapoint: nthDatapointFn(-2),
+  lastDelta: nthDeltaFn(-1),
 };
 
 function parseMixedTags(s: string) {
