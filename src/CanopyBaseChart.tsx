@@ -61,6 +61,10 @@ function BaseChartForEditor(props: any) {
     (component: any) => component.type === "Container"
   );
 
+  if (!container) {
+    return null;
+  }
+
   const interactClass = container
     ? setInteractions(container.id, {
         drag: {
@@ -76,7 +80,8 @@ function BaseChartForEditor(props: any) {
     }
   }, []);
 
-  return primaryGroup && container ? (
+  const { offsetX, offsetY, blurRadius, fill } = container.config.boxShadow;
+  return primaryGroup ? (
     <div
       className={interactClass}
       style={{
@@ -90,6 +95,10 @@ function BaseChartForEditor(props: any) {
         paddingRight: container.config.margin.r,
         paddingTop: container.config.margin.t,
         paddingBottom: container.config.margin.b,
+        borderRadius: container.config.rx,
+        boxShadow: container.config.showBoxShadow
+          ? `${offsetX}px ${offsetY}px ${blurRadius}px ${fill}`
+          : undefined,
       }}
     >
       <div ref={textRef}>

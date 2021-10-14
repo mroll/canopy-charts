@@ -7,6 +7,7 @@ export const ComponentType = {
   Bar: "Bar",
   Bars: "Bars",
   BarGroup: "BarGroup",
+  BarStack: "BarStack",
   Curve: "Curve",
   Gradient: "Gradient",
   Grid: "Grid",

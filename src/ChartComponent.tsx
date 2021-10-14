@@ -8,6 +8,7 @@ import RenderRect from "./Rect";
 import RenderGradient from "./Gradient";
 import RenderBar from "./Bar";
 import RenderBarGroup from "./BarGroup";
+import RenderBarStack from "./BarStack";
 import RenderBars from "./Bars";
 import RenderGroup from "./Group";
 import RenderGrid from "./Grid";
@@ -26,6 +27,7 @@ const Component2Render: Component2RenderMap = {
   [ComponentType.Bar]: RenderBar,
   [ComponentType.Bars]: RenderBars,
   [ComponentType.BarGroup]: RenderBarGroup,
+  [ComponentType.BarStack]: RenderBarStack,
   [ComponentType.Curve]: RenderCurve,
   [ComponentType.Axis]: RenderAxis,
   [ComponentType.AreaClosed]: RenderAreaClosed,
