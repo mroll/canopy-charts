@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import React, { useEffect, useRef } from "react";
+import React, { forwardRef, useEffect, useRef } from "react";
 import { ParentSize } from "@visx/responsive";
 import interact from "interactjs";
 
@@ -32,27 +32,14 @@ const viewBox = (chart: Chart, width: number, height: number): ViewBox => {
       (primaryGroup.config.height as number),
   };
 
-  const { minX, minY, maxX, maxY } = bb;
-  // return { width: maxX - minX, height: maxY - minY };
-
   return { width, height };
 };
 
-function BaseChartForEditor(props: any) {
+const BaseChartForEditor = forwardRef((props: any, ref) => {
   const { chart, children, textComponents, renderForEditor, showTitle } = props;
   const { setTextHeight, setInteractions, setSelectedComponent } =
     useChartOps();
   const textRef = useRef(null);
-
-  const onChartClick = (e: any) => {
-    const groupId = Object.keys(chart.componentsById).find((componentId) => {
-      return chart.componentsById[componentId].type === "Group";
-    });
-
-    if (groupId) {
-      setSelectedComponent(groupId);
-    }
-  };
 
   const primaryGroup = Object.values(chart.componentsById).find(
     (component: any) => component.type === "Group"
@@ -83,7 +70,9 @@ function BaseChartForEditor(props: any) {
   const { offsetX, offsetY, blurRadius, fill } = container.config.boxShadow;
   return primaryGroup ? (
     <div
-      className={interactClass}
+      id={`chart-${chart.id}`}
+      ref={ref}
+      className={`chart-container ${interactClass}`}
       style={{
         position: "absolute",
         backgroundColor: container.config.fill,
@@ -117,13 +106,12 @@ function BaseChartForEditor(props: any) {
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
         style={{ width: "100%", height: "100%" }}
-        onClick={onChartClick}
       >
         {children}
       </svg>
     </div>
   ) : null;
-}
+});
 
 function BaseChartForRemoteApp(props: any) {
   const {
@@ -157,7 +145,7 @@ function BaseChartForRemoteApp(props: any) {
   );
 }
 
-function CanopyBaseChart(props: any) {
+const CanopyBaseChart = forwardRef((props: any, ref) => {
   const { chart, setChart, renderForEditor, width, height, showTitle } = props;
 
   const BaseChartComponent = renderForEditor
@@ -187,6 +175,7 @@ function CanopyBaseChart(props: any) {
         >
           <BaseChartComponent
             chart={chart}
+            ref={ref}
             renderForEditor={renderForEditor}
             textComponents={textComponents}
             width={width || parent.width}
@@ -207,6 +196,6 @@ function CanopyBaseChart(props: any) {
       )}
     </ParentSize>
   );
-}
+});
 
 export default CanopyBaseChart;

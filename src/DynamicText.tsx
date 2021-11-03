@@ -98,6 +98,7 @@ function RenderDynamicText(props: any) {
 
   return (
     <div
+      className="dynamic-text"
       style={{
         fontFamily: font.family,
         fontSize: font.size,
