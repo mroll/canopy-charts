@@ -111,7 +111,7 @@ export interface InteractionOptions {
 export interface ChartOperationsContextObject {
   setChart: (chart: Chart) => void;
   setTextHeight: (ref: any) => void;
-  getTextRef: () => any;
+  getTextHeight: () => number;
   setComponentFields: (componentId: string, ...setters: any[]) => void;
   setInteractions: (componentId: string, options: InteractionOptions) => string;
   setSelectedComponent: (componentId: string | null) => void;
@@ -125,6 +125,7 @@ export interface ChartOperationsContextObject {
   getContainer: () => ChartComponent | undefined;
   selectedComponentId: string;
   getComponents: (ids: string[]) => ChartComponent[]
+  computedChartHeight: () => number
 }
 
 type FunctionalSetter = (prevChart: Chart) => void;

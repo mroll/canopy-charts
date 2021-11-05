@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Group as VXGroup } from "@visx/group";
 import { LinearGradient } from "@visx/gradient";
 
@@ -24,16 +24,26 @@ function Group(props: any) {
     // gradientY1,
     // gradientY2,
   } = config;
-  const { selectedComponentId, setSelectedComponent, getChartDimensions } =
-    useChartOps();
+  const {
+    selectedComponentId,
+    computedChartHeight,
+    getChartDimensions,
+    getTextHeight,
+  } = useChartOps();
+
+  const chartTextHeight = getTextHeight();
 
   const { width: chartWidth, height: chartHeight } = getChartDimensions();
+
+  const _computedChartHeight = useMemo(() => {
+    return computedChartHeight();
+  }, [chartTextHeight, chartHeight]);
 
   const group = {
     left,
     top,
     width: renderForEditor ? width : chartWidth || width,
-    height: renderForEditor ? height : chartHeight || height,
+    height: renderForEditor ? height : _computedChartHeight,
     margin,
   };
 

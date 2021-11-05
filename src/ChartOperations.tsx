@@ -26,6 +26,18 @@ const ChartOperationsContext =
 export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
   const { chart, setChart, renderForEditor, width, height } = args;
 
+  const computedChartHeight = () => {
+    const container = getContainer();
+
+    return Math.max(
+      (height || 0) -
+        (chart.textHeight || 0) -
+        ((container && container.config.margin.t) || 0) -
+        ((container && container.config.margin.b) || 0),
+      0
+    );
+  };
+
   const setComponentFields = (componentId: string, setters: any): void => {
     // Need to use functional update style otherwise consecutive
     // calls will conflict and changes will be lost
@@ -81,7 +93,7 @@ export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
               (component: any) => component.type === "Group"
             ) as ChartComponentT;
 
-            const textRef = chart.textRef;
+            const textHeight = chart.textHeight;
             const computedGroupWidth = container
               ? (container.config.width as number) -
                 ((container.config.margin as { [key: string]: number })
@@ -95,7 +107,7 @@ export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
                   .t as number) -
                 ((container.config.margin as { [key: string]: number })
                   .b as number) -
-                (textRef ? textRef : 0)
+                (textHeight ? textHeight : 0)
               : primaryGroup.config.height;
 
             setComponentFields(primaryGroup.id, {
@@ -196,12 +208,12 @@ export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
       (component: any) => component.type === "Container"
     );
 
-  const getTextRef = () => chart.textRef;
+  const getTextHeight = () => chart.textHeight;
 
-  const setTextHeight = (ref: any) =>
+  const setTextHeight = (height: number) =>
     setChart({
       ...chart,
-      textRef: ref,
+      textHeight: height,
     });
 
   const getComponents = (ids: string[]) =>
@@ -210,7 +222,7 @@ export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
   const context = {
     setChart,
     setTextHeight,
-    getTextRef,
+    getTextHeight,
     setComponentFields,
     setInteractions,
     setSelectedComponent,
@@ -221,6 +233,7 @@ export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
     getContainer,
     selectedComponentId,
     getComponents,
+    computedChartHeight,
   };
   const { children } = args;
 

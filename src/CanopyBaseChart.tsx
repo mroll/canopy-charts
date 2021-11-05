@@ -35,11 +35,43 @@ const viewBox = (chart: Chart, width: number, height: number): ViewBox => {
   return { width, height };
 };
 
+export const BaseSvg = (props: any) => {
+  const { chart, renderForEditor, width, height } = props;
+
+  const svgComponents = chart.componentsArray.filter(
+    (id: string) =>
+      chart.componentsById[id].type !== "Container" &&
+      chart.componentsById[id].type !== "DynamicText"
+  );
+
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      style={{ width: "100%", height: "100%" }}
+      viewBox={renderForEditor ? null : `0 0 ${width} ${height}`}
+    >
+      {svgComponents.map((componentId: string) => (
+        <ChartComponent
+          key={componentId}
+          table={chart.table}
+          componentsById={chart.componentsById}
+          renderForEditor={renderForEditor}
+          {...chart.componentsById[componentId]}
+        />
+      ))}
+    </svg>
+  );
+};
+
 const BaseChartForEditor = forwardRef((props: any, ref) => {
-  const { chart, children, textComponents, renderForEditor, showTitle } = props;
-  const { setTextHeight, setInteractions, setSelectedComponent } =
-    useChartOps();
+  const { chart, renderForEditor, showTitle, width } = props;
+  const { setTextHeight, setInteractions, computedChartHeight } = useChartOps();
   const textRef = useRef(null);
+
+  const vb = renderForEditor
+    ? {}
+    : viewBox(chart, width, computedChartHeight());
 
   const primaryGroup = Object.values(chart.componentsById).find(
     (component: any) => component.type === "Group"
@@ -52,7 +84,7 @@ const BaseChartForEditor = forwardRef((props: any, ref) => {
     return null;
   }
 
-  const interactClass = container
+  const interactClass = renderForEditor
     ? setInteractions(container.id, {
         drag: {
           xField: "left",
@@ -67,6 +99,12 @@ const BaseChartForEditor = forwardRef((props: any, ref) => {
     }
   }, []);
 
+  const textComponents = chart.componentsArray.filter(
+    (id: string) =>
+      chart.componentsById[id].type !== "Container" &&
+      chart.componentsById[id].type === "DynamicText"
+  );
+
   const { offsetX, offsetY, blurRadius, fill } = container.config.boxShadow;
   return primaryGroup ? (
     <div
@@ -74,10 +112,10 @@ const BaseChartForEditor = forwardRef((props: any, ref) => {
       ref={ref}
       className={`chart-container ${interactClass}`}
       style={{
-        position: "absolute",
+        position: renderForEditor ? "absolute" : null,
         backgroundColor: container.config.fill,
-        width: container.config.width,
-        height: container.config.height,
+        width: renderForEditor ? container.config.width : null,
+        height: renderForEditor ? container.config.height : null,
         top: container.config.top,
         left: container.config.left,
         paddingLeft: container.config.margin.l,
@@ -102,98 +140,60 @@ const BaseChartForEditor = forwardRef((props: any, ref) => {
             />
           ))}
       </div>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        xmlnsXlink="http://www.w3.org/1999/xlink"
-        style={{ width: "100%", height: "100%" }}
-      >
-        {children}
-      </svg>
+      <BaseSvg
+        chart={chart}
+        renderForEditor={renderForEditor}
+        width={vb.width}
+        height={vb.height}
+      />
     </div>
   ) : null;
 });
 
-function BaseChartForRemoteApp(props: any) {
+const CanopyBaseChart = forwardRef((props: any, ref) => {
   const {
-    children,
-    textComponents,
     chart,
+    setChart,
+    renderForEditor,
     width,
     height,
-    renderForEditor,
     showTitle,
+    svgOnly,
   } = props;
 
-  const vb = viewBox(chart, width, height);
-
-  return (
-    <div className="">
-      {showTitle &&
-        textComponents.map((componentId: string) => (
-          <ChartComponent
-            key={componentId}
-            table={chart.table}
-            componentsById={chart.componentsById}
-            renderForEditor={renderForEditor}
-            {...chart.componentsById[componentId]}
-          />
-        ))}
-      <svg width="100%" height="100%" viewBox={`0 0 ${vb.width} ${vb.height}`}>
-        {children}
-      </svg>
-    </div>
-  );
-}
-
-const CanopyBaseChart = forwardRef((props: any, ref) => {
-  const { chart, setChart, renderForEditor, width, height, showTitle } = props;
-
-  const BaseChartComponent = renderForEditor
-    ? BaseChartForEditor
-    : BaseChartForRemoteApp;
-
-  const textComponents = chart.componentsArray.filter(
-    (id: string) =>
-      chart.componentsById[id].type !== "Container" &&
-      chart.componentsById[id].type === "DynamicText"
-  );
-  const svgComponents = chart.componentsArray.filter(
-    (id: string) =>
-      chart.componentsById[id].type !== "Container" &&
-      chart.componentsById[id].type !== "DynamicText"
-  );
+  const BaseChartComponent = true ? BaseChartForEditor : BaseChartForRemoteApp;
 
   return (
     <ParentSize>
-      {(parent) => (
-        <ChartOperationsProvider
-          chart={chart}
-          setChart={setChart || noop}
-          renderForEditor={renderForEditor}
-          width={width || parent.width}
-          height={height || parent.height}
-        >
-          <BaseChartComponent
+      {(parent) => {
+        return (
+          <ChartOperationsProvider
             chart={chart}
-            ref={ref}
+            setChart={setChart || noop}
             renderForEditor={renderForEditor}
-            textComponents={textComponents}
             width={width || parent.width}
             height={height || parent.height}
-            showTitle={showTitle}
           >
-            {svgComponents.map((componentId: string) => (
-              <ChartComponent
-                key={componentId}
-                table={chart.table}
-                componentsById={chart.componentsById}
+            {svgOnly ? (
+              <BaseSvg
+                chart={chart}
+                width={width}
+                height={width}
                 renderForEditor={renderForEditor}
-                {...chart.componentsById[componentId]}
               />
-            ))}
-          </BaseChartComponent>
-        </ChartOperationsProvider>
-      )}
+            ) : (
+              <BaseChartComponent
+                chart={chart}
+                ref={ref}
+                renderForEditor={renderForEditor}
+                width={width || parent.width}
+                height={height || parent.height}
+                showTitle={showTitle}
+              />
+            )}
+          </ChartOperationsProvider>
+        );
+      }}
     </ParentSize>
   );
 });

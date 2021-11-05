@@ -83,7 +83,7 @@ export const scale = (
 
       return scaleLinear<number>({
         range,
-        domain: [0, domain[1]],
+        domain: [domain[0] < 0 ? domain[0] * 1.1 : 0, domain[1]],
       });
     default:
       return scaleBand<string>({
