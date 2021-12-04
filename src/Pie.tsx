@@ -1,14 +1,11 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { Pie } from "@visx/shape";
-import { Group as VXGroup } from "@visx/group";
-import { Group } from "@visx/group";
-import { scaleBand } from "@visx/scale";
 
 import { useChartOps } from "./ChartOperations";
-import { boundaries, scale as canopyScale, getTableColumn } from "./util";
+import { getTableColumn } from "./util";
 
 function RenderPie(props: any) {
-  const { id, config, group } = props;
+  const { config, group } = props;
   const {
     width,
     height,
@@ -35,7 +32,6 @@ function RenderPie(props: any) {
     label: x,
     value: idx < YY.body.length ? YY.body[idx] : 0,
   }));
-  const getXVal = (d: any) => d.label;
   const getYVal = (d: any) => d.value;
 
   // const { minX, maxX, minY, maxY } = boundaries(width, height, group);

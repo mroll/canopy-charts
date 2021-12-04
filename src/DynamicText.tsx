@@ -1,6 +1,6 @@
 import React from "react";
 import { useChartOps } from "./ChartOperations";
-import { ChartTable, ChartComponent, TableColumn } from "./types";
+import { ChartTable, ChartComponent } from "./types";
 import { getTableColumn } from "./util";
 
 interface Tag {
@@ -75,7 +75,7 @@ function parseMixedTags(s: string) {
 }
 
 function RenderDynamicText(props: any) {
-  const { id, config, children } = props;
+  const { config, children } = props;
   const { font, display, margin, color, innerText } = config;
   const { getChartTable, getComponents } = useChartOps();
 

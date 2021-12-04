@@ -13,21 +13,9 @@ import {
 } from "./util";
 
 function Difference(props: any) {
-  const { id, config, group } = props;
-  const {
-    clipAboveTo,
-    clipBelowTo,
-    curve,
-    belowArea,
-    aboveArea,
-    padding,
-    width,
-    height,
-    X,
-    Y,
-    defaultX,
-    defaultY,
-  } = config;
+  const { config, group } = props;
+  const { belowArea, aboveArea, width, height, X, Y, defaultX, defaultY } =
+    config;
   const { getChartTable } = useChartOps();
 
   const chartTable = getChartTable();

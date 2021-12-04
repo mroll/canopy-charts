@@ -1,31 +1,19 @@
 import React, { useMemo } from "react";
-import { scaleBand, scaleLinear, scaleOrdinal } from "@visx/scale";
 import { Grid as VXGrid } from "@visx/grid";
 
 import { useChartOps } from "./ChartOperations";
-import {
-  boundaries,
-  scale as canopyScale,
-  getTableColumn,
-  getTableColumns,
-} from "./util";
+import { boundaries, scale as canopyScale, getTableColumns } from "./util";
 
 function Grid(props: any) {
   const { id, config, group } = props;
   const {
     width,
     height,
-    left,
-    top,
     fill,
     numTickRows,
     numTickColumns,
     stroke,
     strokeWidth,
-    rowPadding,
-    colPadding,
-    X,
-    Y,
     defaultX,
     defaultY,
   } = config;
@@ -48,7 +36,7 @@ function Grid(props: any) {
   const YY =
     yColumns.length > 0 ? getTableColumns(chartTable, getYColumns()) : defaultY;
 
-  const { minX, maxX, minY, maxY } = boundaries(width, height, group);
+  const { minX, minY, maxY } = boundaries(width, height, group);
 
   const xRange: [number, number] = [
     0,

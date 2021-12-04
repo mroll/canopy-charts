@@ -8,6 +8,9 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "strict": true,
+    "strictPropertyInitialization": false,
     "lib": [
       "dom", "esnext"
     ]

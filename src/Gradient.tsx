@@ -7,14 +7,12 @@ type GradientType = keyof typeof allGradients;
 
 function RenderGradient(props: any) {
   const { id, config, group } = props;
-  const { x, y, width, height, fill, rx, gradient } = config;
+  const { width, height, fill, rx, gradient } = config;
   const { setInteractions } = useChartOps();
 
-  const { minX, maxX, minY, maxY } = {
+  const { minX, minY } = {
     minX: group ? group.margin.l : 0,
-    maxX: group ? group.width - group.margin.r : width,
     minY: group ? group.margin.t : 0,
-    maxY: group ? group.height - group.margin.b : height,
   };
 
   const interactClass = setInteractions(id, {

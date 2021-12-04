@@ -24,12 +24,8 @@ function Group(props: any) {
     // gradientY1,
     // gradientY2,
   } = config;
-  const {
-    selectedComponentId,
-    computedChartHeight,
-    getChartDimensions,
-    getTextHeight,
-  } = useChartOps();
+  const { computedChartHeight, getChartDimensions, getTextHeight } =
+    useChartOps();
 
   const chartTextHeight = getTextHeight();
 
@@ -46,12 +42,6 @@ function Group(props: any) {
     height: renderForEditor ? height : _computedChartHeight,
     margin,
   };
-
-  const classIfSelected = renderForEditor
-    ? selectedComponentId === id
-      ? "stroke-current text-blue-300 stroke-2"
-      : ""
-    : "";
 
   const gradientId = `component-${id}-gradient`;
   return (

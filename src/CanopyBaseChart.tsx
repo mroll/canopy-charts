@@ -80,6 +80,12 @@ const BaseChartForEditor = forwardRef((props: any, ref) => {
     (component: any) => component.type === "Container"
   );
 
+  useEffect(() => {
+    if (textRef.current) {
+      setTextHeight(textRef.current.clientHeight);
+    }
+  }, []);
+
   if (!container) {
     return null;
   }
@@ -92,12 +98,6 @@ const BaseChartForEditor = forwardRef((props: any, ref) => {
         },
       })
     : "";
-
-  useEffect(() => {
-    if (textRef.current) {
-      setTextHeight(textRef.current.clientHeight);
-    }
-  }, []);
 
   const textComponents = chart.componentsArray.filter(
     (id: string) =>
@@ -178,7 +178,7 @@ const CanopyBaseChart = forwardRef((props: any, ref) => {
               <BaseSvg
                 chart={chart}
                 width={width}
-                height={width}
+                height={height}
                 renderForEditor={renderForEditor}
               />
             ) : (

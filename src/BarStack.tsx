@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { Group } from "@visx/group";
-import { scaleBand, scaleLinear, scaleOrdinal } from "@visx/scale";
+import { scaleLinear, scaleOrdinal } from "@visx/scale";
 import { BarStack as VXBarStack } from "@visx/shape";
 
 import { useChartOps } from "./ChartOperations";
@@ -10,7 +10,7 @@ const blue = "#aeeef8";
 export const green = "#e5fd3d";
 
 function BarStack(props: any) {
-  const { id, config, group } = props;
+  const { config, group } = props;
   const {
     width,
     height,

@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { Group } from "@visx/group";
-import { scaleBand, scaleLinear, scaleOrdinal } from "@visx/scale";
+import { scaleBand, scaleOrdinal } from "@visx/scale";
 import { BarGroup as VXBarGroup } from "@visx/shape";
 
 import { useChartOps } from "./ChartOperations";
@@ -10,7 +10,7 @@ const blue = "#aeeef8";
 export const green = "#e5fd3d";
 
 function BarGroup(props: any) {
-  const { id, config, group } = props;
+  const { config, group } = props;
   const {
     width,
     height,
@@ -26,7 +26,7 @@ function BarGroup(props: any) {
     defaultX,
     defaultY,
   } = config;
-  const { setInteractions, getChartTable } = useChartOps();
+  const { getChartTable } = useChartOps();
 
   const chartTable = getChartTable();
 

@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { Bar } from "@visx/shape";
 import { Group } from "@visx/group";
-import { scaleBand, scaleLinear } from "@visx/scale";
+import { scaleBand } from "@visx/scale";
 
 import { useChartOps } from "./ChartOperations";
 import { boundaries, scale as canopyScale, getTableColumn } from "./util";
@@ -21,12 +21,7 @@ function RenderBars(props: any) {
     defaultX,
     defaultY,
   } = config;
-  const {
-    setInteractions,
-    selectedComponentId,
-    setSelectedComponent,
-    getChartTable,
-  } = useChartOps();
+  const { setSelectedComponent, getChartTable } = useChartOps();
 
   const chartTable = getChartTable();
 
@@ -34,7 +29,6 @@ function RenderBars(props: any) {
   const YY = Y ? getTableColumn(chartTable, Y) : defaultY;
 
   // bounds
-  const xMax = group ? group.width - group.margin.r : width;
   const yMax = group ? group.height - group.margin.b : height;
 
   const { minX, maxX, minY, maxY } = boundaries(width, height, group);
@@ -52,15 +46,6 @@ function RenderBars(props: any) {
     () => canopyScale([YY], [maxY, minY]),
     [YY, minY, maxY]
   );
-
-  const interactClass = group
-    ? ""
-    : setInteractions(id, {
-        drag: {
-          xField: "left",
-          yField: "top",
-        },
-      });
 
   // const classIfSelected =
   //   selectedComponentId === id ? "stroke-current text-blue-300 stroke-2" : "";

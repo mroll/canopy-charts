@@ -2,7 +2,7 @@ import React from "react";
 import { Text } from "@visx/text";
 
 function RenderTitle(props: any) {
-  const { id, config } = props;
+  const { config } = props;
   const { angle, x, y, dx, dy, font, width, fill, value, verticalAnchor } =
     config;
 
