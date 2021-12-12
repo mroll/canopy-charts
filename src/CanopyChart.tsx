@@ -9,7 +9,7 @@ function CanopyChart(props: any) {
 
   const getChart = useCallback(async () => {
     const _chart = await fetch(
-      `http://${process.env.REACT_APP_API_HOSTNAME}/chart?id=${id}`
+      `${process.env.REACT_APP_API_URL}/chart?id=${id}`
     ).then((res) => res.json());
 
     const _table = table || _chart.table;
