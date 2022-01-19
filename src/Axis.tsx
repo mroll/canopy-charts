@@ -64,6 +64,9 @@ function Axis(props: any) {
     ? group.margin.l + left
     : 0;
 
+  const tickTransformX = isHorizontal ? tickTransform.x : tickTransform.x - 6;
+  const tickTransformY = isHorizontal ? tickTransform.y : tickTransform.y + 4;
+
   return (
     <VXAxis
       axisClassName={interactClass}
@@ -88,7 +91,7 @@ function Axis(props: any) {
       strokeWidth={strokeWidth}
       hideAxisLine={!showAxis}
       tickLabelProps={() => {
-        const transform = `translate(${tickTransform.x}, ${tickTransform.y})`;
+        const transform = `translate(${tickTransformX}, ${tickTransformY})`;
 
         return {
           fill: ticks.labelColor,

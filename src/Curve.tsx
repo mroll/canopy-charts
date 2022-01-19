@@ -36,7 +36,6 @@ function RenderCurve(props: any) {
 
   const chartTable = getChartTable();
 
-  console.log("table", chartTable);
   const xType = X
     ? chartTable?.head?.find((col) => col.name === X)?.type
     : null;

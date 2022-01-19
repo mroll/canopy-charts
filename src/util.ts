@@ -8,7 +8,6 @@ export const getTableColumn = (
   t: ChartTable,
   columnName: string
 ): TableColumn => {
-  console.log("t", t);
   const head = t.head.find((col) => col.name === columnName);
   const colIndex = t.head.findIndex((col) => col.name === columnName);
 
