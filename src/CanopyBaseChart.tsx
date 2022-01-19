@@ -41,7 +41,7 @@ export const BaseSvg = (props: any) => {
   const svgComponents = chart.componentsArray.filter(
     (id: string) =>
       chart.componentsById[id].type !== "Container" &&
-      chart.componentsById[id].type !== "DynamicText"
+      chart.componentsById[id].type !== "Text"
   );
 
   return (
@@ -102,7 +102,7 @@ const BaseChartForEditor = forwardRef((props: any, ref) => {
   const textComponents = chart.componentsArray.filter(
     (id: string) =>
       chart.componentsById[id].type !== "Container" &&
-      chart.componentsById[id].type === "DynamicText"
+      chart.componentsById[id].type === "Text"
   );
 
   const { offsetX, offsetY, blurRadius, fill } = container.config.boxShadow;

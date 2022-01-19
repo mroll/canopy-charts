@@ -14,7 +14,7 @@ import RenderGroup from "./Group";
 import RenderGrid from "./Grid";
 import RenderPie from "./Pie";
 import RenderTitle from "./Title";
-import RenderDynamicText from "./DynamicText";
+import RenderText from "./Text";
 
 import {
   ChartComponentProps,
@@ -37,7 +37,7 @@ const Component2Render: Component2RenderMap = {
   [ComponentType.Difference]: RenderDifference,
   [ComponentType.Pie]: RenderPie,
   [ComponentType.Title]: RenderTitle,
-  [ComponentType.DynamicText]: RenderDynamicText,
+  [ComponentType.Text]: RenderText,
 };
 
 function ChartComponentDisplay(props: ChartComponentProps) {

@@ -15,7 +15,7 @@ export const ComponentType = {
   Pie: "Pie",
   Rect: "Rect",
   Title: "Title",
-  DynamicText: "DynamicText",
+  Text: "Text",
   Container: "Container",
 };
 

@@ -74,7 +74,7 @@ function parseMixedTags(s: string) {
   return data;
 }
 
-function RenderDynamicText(props: any) {
+function RenderText(props: any) {
   const { config, children } = props;
   const { font, display, margin, color, innerText } = config;
   const { getChartTable, getComponents } = useChartOps();
@@ -116,7 +116,7 @@ function RenderDynamicText(props: any) {
     >
       {childComponents.length > 0
         ? childComponents.map((child: ChartComponent) => (
-            <RenderDynamicText
+            <RenderText
               key={child.id}
               id={child.id}
               config={child.config}
@@ -132,4 +132,4 @@ function RenderDynamicText(props: any) {
   );
 }
 
-export default RenderDynamicText;
+export default RenderText;
