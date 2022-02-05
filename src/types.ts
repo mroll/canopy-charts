@@ -77,6 +77,12 @@ export interface ChartTable {
   body: Array<Array<TableData>>;
 }
 
+export interface ColumnSelector {
+  type: string;
+  collectionName: string;
+  name: string;
+}
+
 export interface Chart {
   id: string;
   name: string;
@@ -99,6 +105,11 @@ export interface Chart {
   componentsArray: string[];
   table: ChartTable;
   selectedComponentId: string | null;
+  remoteColumns: {
+    [componentId: string]: {
+      [field: string]: ColumnSelector;
+    };
+  };
 }
 
 export interface InteractionOptions {
@@ -124,8 +135,8 @@ export interface ChartOperationsContextObject {
   };
   getContainer: () => ChartComponent | undefined;
   selectedComponentId: string;
-  getComponents: (ids: string[]) => ChartComponent[]
-  computedChartHeight: () => number
+  getComponents: (ids: string[]) => ChartComponent[];
+  computedChartHeight: () => number;
 }
 
 type FunctionalSetter = (prevChart: Chart) => void;

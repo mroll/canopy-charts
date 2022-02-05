@@ -1,6 +1,6 @@
 {
   "name": "canopy-charts",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "Canopy Charts API wrapper",
   "main": "dist/bundle.js",
   "scripts": {
