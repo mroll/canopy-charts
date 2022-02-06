@@ -79,7 +79,7 @@ export interface ChartTable {
 
 export interface ColumnSelector {
   type: string;
-  collectionName: string;
+  collection: string;
   name: string;
 }
 
