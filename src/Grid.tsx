@@ -2,7 +2,11 @@ import React, { useMemo } from "react";
 import { Grid as VXGrid } from "@visx/grid";
 
 import { useChartOps } from "./ChartOperations";
-import { boundaries, scale as canopyScale, getTableColumns } from "./util";
+import {
+  boundaries,
+  scale as canopyScale,
+  getTableColumnsFromSelectors,
+} from "./util";
 
 function Grid(props: any) {
   const { id, config, group } = props;
@@ -17,8 +21,12 @@ function Grid(props: any) {
     defaultX,
     defaultY,
   } = config;
-  const { setInteractions, getChartTable, getXColumns, getYColumns } =
-    useChartOps();
+  const {
+    setInteractions,
+    getChartTable,
+    getXColumnSelectors,
+    getYColumnSelectors,
+  } = useChartOps();
 
   const chartTable = getChartTable();
 
@@ -29,12 +37,16 @@ function Grid(props: any) {
     },
   });
 
-  const xColumns = getXColumns();
-  const yColumns = getYColumns();
+  const xColumns = getXColumnSelectors();
+  const yColumns = getYColumnSelectors();
   const XX =
-    xColumns.length > 0 ? getTableColumns(chartTable, xColumns) : defaultX;
+    xColumns.length > 0
+      ? getTableColumnsFromSelectors(chartTable, xColumns)
+      : defaultX;
   const YY =
-    yColumns.length > 0 ? getTableColumns(chartTable, getYColumns()) : defaultY;
+    yColumns.length > 0
+      ? getTableColumnsFromSelectors(chartTable, yColumns)
+      : defaultY;
 
   const { minX, minY, maxY } = boundaries(width, height, group);
 

@@ -66,7 +66,12 @@ export const BaseSvg = (props: any) => {
 
 const BaseChartForEditor = forwardRef((props: any, ref) => {
   const { chart, renderForEditor, showTitle, width } = props;
-  const { setTextHeight, setInteractions, computedChartHeight } = useChartOps();
+  const {
+    setTextHeight,
+    setInteractions,
+    computedChartHeight,
+    fetchRemoteTable,
+  } = useChartOps();
   const textRef = useRef(null);
 
   const vb = renderForEditor
@@ -84,6 +89,10 @@ const BaseChartForEditor = forwardRef((props: any, ref) => {
     if (textRef.current) {
       setTextHeight(textRef.current.clientHeight);
     }
+  }, []);
+
+  useEffect(() => {
+    fetchRemoteTable();
   }, []);
 
   if (!container) {

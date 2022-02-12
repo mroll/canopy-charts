@@ -2,7 +2,11 @@ import React, { useMemo } from "react";
 import { Axis as VXAxis } from "@visx/axis";
 
 import { useChartOps } from "./ChartOperations";
-import { boundaries, scale as canopyScale, getTableColumns } from "./util";
+import {
+  boundaries,
+  scale as canopyScale,
+  getTableColumnsFromSelectors,
+} from "./util";
 
 function Axis(props: any) {
   const { id, config, group } = props;
@@ -20,14 +24,18 @@ function Axis(props: any) {
     tickTransform,
     showAxis,
   } = config;
-  const { setInteractions, getChartTable, getXColumns, getYColumns } =
-    useChartOps();
+  const {
+    setInteractions,
+    getChartTable,
+    getXColumnSelectors,
+    getYColumnSelectors,
+  } = useChartOps();
   const chartTable = getChartTable();
   const isHorizontal = ["bottom", "top"].includes(orientation);
-  const domain = isHorizontal ? getXColumns() : getYColumns();
+  const domain = isHorizontal ? getXColumnSelectors() : getYColumnSelectors();
 
   const columns = domain
-    ? getTableColumns(chartTable, domain)
+    ? getTableColumnsFromSelectors(chartTable, domain)
     : [
         {
           head: { name: "A", type: "Text" },

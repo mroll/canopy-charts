@@ -30,6 +30,7 @@ type ComponentAttributeValue =
   | boolean
   | TableColumn
   | TableColumn[]
+  | ColumnSelector
   | null;
 
 export type ChartComponentConfig = {
@@ -77,7 +78,7 @@ export interface ChartTable {
   body: Array<Array<TableData>>;
 }
 
-export interface ColumnSelector {
+export type ColumnSelector = {
   type: string;
   collection: string;
   name: string;
@@ -104,12 +105,13 @@ export interface Chart {
   };
   componentsArray: string[];
   table: ChartTable;
-  selectedComponentId: string | null;
+  remoteTable: ChartTable
   remoteColumns: {
     [componentId: string]: {
       [field: string]: ColumnSelector;
     };
   };
+  selectedComponentId: string | null;
 }
 
 export interface InteractionOptions {
@@ -127,8 +129,10 @@ export interface ChartOperationsContextObject {
   setInteractions: (componentId: string, options: InteractionOptions) => string;
   setSelectedComponent: (componentId: string | null) => void;
   getChartTable: () => ChartTable;
-  getXColumns: () => string[];
-  getYColumns: () => string[];
+  getXColumns: () => ComponentAttributeValue[];
+  getXColumnSelectors: () => ColumnSelector[];
+  getYColumnSelectors: () => ColumnSelector[];
+  getYColumns: () => ComponentAttributeValue[];
   getChartDimensions: () => {
     width: number;
     height: number;

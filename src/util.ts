@@ -2,7 +2,7 @@ import { scaleBand, scaleLinear, scaleTime } from "@visx/scale";
 import { extent } from "d3-array";
 import { ScaleBand, ScaleLinear, ScaleTime } from "d3-scale";
 
-import { ChartTable, Group, TableColumn, TableData } from "./types";
+import { ChartTable, ColumnSelector, Group, TableColumn, TableData } from "./types";
 
 export const getTableColumn = (
   t: ChartTable,
@@ -32,8 +32,16 @@ export const getTableColumn = (
 export const getTableColumns = (
   t: ChartTable,
   columnNames: string[]
-): TableColumn[] =>
-  columnNames.map((columnId: string) => getTableColumn(t, columnId));
+): TableColumn[] => {
+  return columnNames.map((columnId: string) => getTableColumn(t, columnId));
+}
+
+export const getTableColumnsFromSelectors = (
+  t: ChartTable,
+  columnNames: ColumnSelector[]
+): TableColumn[] => {
+  return columnNames.map((column: ColumnSelector) => getTableColumn(t, column.name));
+}
 
 export const boundaries = (width: number, height: number, group: Group) => {
   return {

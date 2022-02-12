@@ -7,7 +7,7 @@ import { useChartOps } from "./ChartOperations";
 import {
   boundaries,
   getTableColumn,
-  getTableColumns,
+  getTableColumnsFromSelectors,
   isBandScale,
   scale as canopyScale,
 } from "./util";
@@ -31,16 +31,21 @@ function RenderCurve(props: any) {
     strokeWidth,
     strokeOpacity,
   } = config;
-  const { setInteractions, getChartTable, getXColumns, getYColumns } =
-    useChartOps();
+  const {
+    setInteractions,
+    getChartTable,
+    getXColumnSelectors,
+    getYColumnSelectors,
+  } = useChartOps();
 
   const chartTable = getChartTable();
 
   const xType = X
-    ? chartTable?.head?.find((col) => col.name === X)?.type
+    ? chartTable?.head?.find((col) => col.name === X.name)?.type
     : null;
-  const XX = X ? getTableColumn(chartTable, X) : defaultX;
-  const YY = Y ? getTableColumn(chartTable, Y) : defaultY;
+  const XX = X ? getTableColumn(chartTable, X.name) : defaultX;
+  const YY = Y ? getTableColumn(chartTable, Y.name) : defaultY;
+
   const lineData = XX.body.map((x: string | number, idx: number) => ({
     label: x,
     value: idx < YY.body.length ? YY.body[idx] : 0,
@@ -51,8 +56,14 @@ function RenderCurve(props: any) {
 
   const { minX, maxX, minY, maxY } = boundaries(width, height, group);
 
-  const xColumns = getTableColumns(chartTable, getXColumns());
-  const yColumns = getTableColumns(chartTable, getYColumns());
+  const xColumns = getTableColumnsFromSelectors(
+    chartTable,
+    getXColumnSelectors()
+  );
+  const yColumns = getTableColumnsFromSelectors(
+    chartTable,
+    getYColumnSelectors()
+  );
 
   const xScale = useMemo(
     () => canopyScale(xColumns, [minX, maxX], padding),
