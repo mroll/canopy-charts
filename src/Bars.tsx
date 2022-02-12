@@ -25,8 +25,8 @@ function RenderBars(props: any) {
 
   const chartTable = getChartTable();
 
-  const XX = X ? getTableColumn(chartTable, X) : defaultX;
-  const YY = Y ? getTableColumn(chartTable, Y) : defaultY;
+  const XX = X ? getTableColumn(chartTable, X.name) : defaultX;
+  const YY = Y ? getTableColumn(chartTable, Y.name) : defaultY;
 
   // bounds
   const yMax = group ? group.height - group.margin.b : height;
