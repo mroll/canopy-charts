@@ -4,7 +4,12 @@ import { scaleBand, scaleOrdinal } from "@visx/scale";
 import { BarGroup as VXBarGroup } from "@visx/shape";
 
 import { useChartOps } from "./ChartOperations";
-import { scale as canopyScale, getTableColumn, getTableColumns } from "./util";
+import {
+  scale as canopyScale,
+  getTableColumn,
+  getTableColumnsFromSelectors,
+} from "./util";
+import { ColumnSelector } from "./types";
 
 const blue = "#aeeef8";
 export const green = "#e5fd3d";
@@ -26,20 +31,22 @@ function BarGroup(props: any) {
     defaultX,
     defaultY,
   } = config;
-  const { getChartTable } = useChartOps();
+  const { getChartTable, getYColumnSelectors } = useChartOps();
 
   const chartTable = getChartTable();
 
-  const XX = X ? getTableColumn(chartTable, X) : defaultX;
-  const YY = Y ? getTableColumns(chartTable, Y) : defaultY;
+  const XX = X ? getTableColumn(chartTable, X.name) : defaultX;
+  const YY = Y
+    ? getTableColumnsFromSelectors(chartTable, getYColumnSelectors())
+    : defaultY;
 
   const barGroupData = Y
     ? XX.body.map((x0: string, xIdx: number) => ({
         x0,
         ...Y.reduce(
-          (acc: any, columnId: string, yIdx: number) => ({
+          (acc: any, colSelector: ColumnSelector, yIdx: number) => ({
             ...acc,
-            [columnId]: YY[yIdx].body[xIdx],
+            [colSelector.name]: YY[yIdx].body[xIdx],
           }),
           {}
         ),
@@ -55,7 +62,9 @@ function BarGroup(props: any) {
         ),
       }));
 
-  const keys = Y || defaultY.map((col: any) => col.head.name);
+  const keys =
+    Y.map((colSelector: ColumnSelector) => colSelector.name) ||
+    defaultY.map((col: any) => col.head.name);
 
   const getX0 = (d: any) => d.x0;
 

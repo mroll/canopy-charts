@@ -9,6 +9,7 @@ import {
   getTableColumn,
   getTableColumnsFromSelectors,
 } from "./util";
+import { ColumnSelector } from "./types";
 
 const blue = "#aeeef8";
 export const green = "#e5fd3d";
@@ -46,9 +47,9 @@ function BarStack(props: any) {
     ? XX.body.map((x0: string, xIdx: number) => ({
         x0,
         ...Y.reduce(
-          (acc: any, columnId: string, yIdx: number) => ({
+          (acc: any, colSelector: ColumnSelector, yIdx: number) => ({
             ...acc,
-            [columnId]: YY[yIdx].body[xIdx],
+            [colSelector.name]: YY[yIdx].body[xIdx],
           }),
           {}
         ),
@@ -64,7 +65,9 @@ function BarStack(props: any) {
         ),
       }));
 
-  const keys = Y || defaultY.map((col: any) => col.head.name);
+  const keys =
+    Y.map((colSelector: ColumnSelector) => colSelector.name) ||
+    defaultY.map((col: any) => col.head.name);
 
   const getXVal = (d: any) =>
     xType === "Date" ? new Date(d.x0).valueOf() : d.x0;
@@ -81,18 +84,15 @@ function BarStack(props: any) {
     [XX, minX, maxX, padding]
   );
 
-  const totals = barGroupData.reduce((allTotals: any, currentDate: any) => {
-    const totalTemperature = keys.reduce((dailyTotal: any, k: any) => {
-      dailyTotal += Number(currentDate[k]);
-      return dailyTotal;
+  const totals = barGroupData.map((dp: Record<string, string>) => {
+    return keys.reduce((total: number, k: string) => {
+      return (total += Number(dp[k]));
     }, 0);
-    allTotals.push(totalTemperature);
-    return allTotals;
-  }, [] as number[]);
+  });
 
   const yScale = useMemo(() => {
     return scaleLinear<number>({
-      domain: [0, Math.max(...totals) + 5 * (Y ? Y.length : 0)],
+      domain: [0, Math.max(...totals)],
       range: [maxY, minY],
       nice: true,
     });
@@ -113,8 +113,8 @@ function BarStack(props: any) {
         color={colorScale}
       >
         {(barStacks) =>
-          barStacks.map((barStack) =>
-            barStack.bars.map((bar) => {
+          barStacks.map((barStack) => {
+            return barStack.bars.map((bar) => {
               return (
                 <rect
                   key={`bar-stack-${barStack.index}-${bar.index}`}
@@ -126,8 +126,8 @@ function BarStack(props: any) {
                   rx={rx}
                 />
               );
-            })
-          )
+            });
+          })
         }
       </VXBarStack>
     </Group>
