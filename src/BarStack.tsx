@@ -4,7 +4,11 @@ import { scaleLinear, scaleOrdinal } from "@visx/scale";
 import { BarStack as VXBarStack } from "@visx/shape";
 
 import { useChartOps } from "./ChartOperations";
-import { scale as canopyScale, getTableColumn, getTableColumns } from "./util";
+import {
+  scale as canopyScale,
+  getTableColumn,
+  getTableColumnsFromSelectors,
+} from "./util";
 
 const blue = "#aeeef8";
 export const green = "#e5fd3d";
@@ -26,14 +30,16 @@ function BarStack(props: any) {
     defaultX,
     defaultY,
   } = config;
-  const { getChartTable } = useChartOps();
+  const { getChartTable, getYColumnSelectors } = useChartOps();
 
   const chartTable = getChartTable();
 
-  const XX = X ? getTableColumn(chartTable, X) : defaultX;
-  const YY = Y ? getTableColumns(chartTable, Y) : defaultY;
+  const XX = X ? getTableColumn(chartTable, X.name) : defaultX;
+  const YY = Y
+    ? getTableColumnsFromSelectors(chartTable, getYColumnSelectors())
+    : defaultY;
   const xType = X
-    ? chartTable?.head?.find((col) => col.name === X)?.type
+    ? chartTable?.head?.find((col) => col.name === X.name)?.type
     : null;
 
   const barGroupData = Y
