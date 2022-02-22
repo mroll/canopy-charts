@@ -1,11 +1,16 @@
 import React, { useCallback, useEffect, useState } from "react";
 
 import CanopyBaseChart from "./CanopyBaseChart";
-import { Chart } from "./types";
+import { Chart, ChartTable } from "./types";
+import { dataService } from "./DataService";
 
 function CanopyChart(props: any) {
   const { id, table } = props;
   const [chart, setChart] = useState<Chart | null>(null);
+  const [dataTable, setDataTable] = useState<ChartTable>({
+    head: [],
+    body: [],
+  });
 
   const getChart = useCallback(async () => {
     const _chart = await fetch(
@@ -24,11 +29,22 @@ function CanopyChart(props: any) {
     getChart();
   }, [getChart]);
 
+  useEffect(() => {
+    const localGetTable = async () => {
+      const table = await dataService.dataTable(id);
+      setDataTable(table);
+    };
+
+    localGetTable();
+  }, [id]);
+
   return (
     chart && (
       <CanopyBaseChart
         chart={chart}
         setChart={setChart}
+        dataTable={dataTable}
+        setDataTable={setDataTable}
         renderForEditor={false}
         showTitle={true}
       />

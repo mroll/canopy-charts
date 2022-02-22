@@ -66,12 +66,7 @@ export const BaseSvg = (props: any) => {
 
 const BaseChartForEditor = forwardRef((props: any, ref) => {
   const { chart, renderForEditor, showTitle, width } = props;
-  const {
-    setTextHeight,
-    setInteractions,
-    computedChartHeight,
-    fetchRemoteTable,
-  } = useChartOps();
+  const { setTextHeight, setInteractions, computedChartHeight } = useChartOps();
   const textRef = useRef(null);
 
   const vb = renderForEditor
@@ -89,10 +84,6 @@ const BaseChartForEditor = forwardRef((props: any, ref) => {
     if (textRef.current) {
       setTextHeight(textRef.current.clientHeight);
     }
-  }, []);
-
-  useEffect(() => {
-    fetchRemoteTable();
   }, []);
 
   if (!container) {
@@ -163,6 +154,8 @@ const CanopyBaseChart = forwardRef((props: any, ref) => {
   const {
     chart,
     setChart,
+    dataTable,
+    setDataTable,
     renderForEditor,
     width,
     height,
@@ -179,6 +172,8 @@ const CanopyBaseChart = forwardRef((props: any, ref) => {
           <ChartOperationsProvider
             chart={chart}
             setChart={setChart || noop}
+            dataTable={dataTable}
+            setDataTable={setDataTable || noop}
             renderForEditor={renderForEditor}
             width={width || parent.width}
             height={height || parent.height}

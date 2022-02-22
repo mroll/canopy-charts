@@ -21,9 +21,9 @@ function RenderBars(props: any) {
     defaultX,
     defaultY,
   } = config;
-  const { setSelectedComponent, getChartTable } = useChartOps();
+  const { setSelectedComponent, dataTable } = useChartOps();
 
-  const chartTable = getChartTable();
+  const chartTable = dataTable;
 
   const XX = X ? getTableColumn(chartTable, X.name) : defaultX;
   const YY = Y ? getTableColumn(chartTable, Y.name) : defaultY;

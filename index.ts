@@ -11,6 +11,7 @@ import {
 } from "./src/types";
 import CanopyChart from "./src/CanopyChart";
 import CanopyBaseChart from "./src/CanopyBaseChart";
+import { initCanopy } from './src/DataService'
 
 export {
   ComponentType,
@@ -23,4 +24,5 @@ export {
   TableColumn,
   TableColumnHeader,
   TableData,
+  initCanopy
 };

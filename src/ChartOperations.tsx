@@ -11,6 +11,7 @@ import {
   ChartOperationsProviderArgs,
   TableData,
   ColumnSelector,
+  ChartTable,
 } from "./types";
 import { dataService } from "./DataService";
 
@@ -27,52 +28,18 @@ const ChartOperationsContext =
   });
 
 export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
-  const { chart, setChart, renderForEditor, width, height } = args;
+  const {
+    chart,
+    setChart,
+    dataTable,
+    setDataTable,
+    renderForEditor,
+    width,
+    height,
+  } = args;
 
-  const fetchRemoteTable = async (): Promise<void> => {
-    if (chart.id === "-1" || chart.remoteColumns.length === 0) {
-      return;
-    }
-
-    // what even is this
-    // this must get cleaned up. must.
-    const distinctColumns = Object.values(chart.remoteColumns).map(
-      (field2ColSelector) => {
-        const cmpColSelectors = (
-          colSelector1: ColumnSelector,
-          colSelector2: ColumnSelector
-        ) => {
-          return (
-            `${colSelector1.collection}/${colSelector1.name}` <
-            `${colSelector2.collection}/${colSelector2.name}`
-          );
-        };
-        return Object.values(field2ColSelector)
-          .sort(cmpColSelectors)
-          .reduce((acc, colSelector) => {
-            const lastColSelector = acc[acc.length - 1];
-            const colSelectorsEqual =
-              `${lastColSelector.collection}/${lastColSelector.name}` ===
-              `${colSelector.collection}/${colSelector.name}`;
-
-            if (colSelectorsEqual) {
-              return acc;
-            }
-
-            return [...acc, colSelector];
-          });
-      }
-    );
-
-    const remoteTable = await dataService.remoteTable(
-      chart.id,
-      distinctColumns
-    );
-
-    setChart({
-      ...chart,
-      remoteTable,
-    });
+  const getDT = (): ChartTable => {
+    return dataTable;
   };
 
   const computedChartHeight = () => {
@@ -309,7 +276,8 @@ export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
     selectedComponentId,
     getComponents,
     computedChartHeight,
-    fetchRemoteTable,
+    dataTable,
+    getDT,
   };
   const { children } = args;
 

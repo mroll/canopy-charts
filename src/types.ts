@@ -141,6 +141,7 @@ export interface ChartOperationsContextObject {
   selectedComponentId: string;
   getComponents: (ids: string[]) => ChartComponent[];
   computedChartHeight: () => number;
+  dataTable: ChartTable
 }
 
 type FunctionalSetter = (prevChart: Chart) => void;
