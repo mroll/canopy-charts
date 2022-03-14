@@ -64,6 +64,7 @@ export interface Component2RenderMap {
 export interface TableColumnHeader {
   type: string;
   name: string;
+  remote?: boolean;
 }
 
 export type TableData = string | number | Date;
@@ -82,7 +83,7 @@ export type ColumnSelector = {
   type: string;
   collection: string;
   name: string;
-}
+};
 
 export interface Chart {
   id: string;
@@ -105,7 +106,7 @@ export interface Chart {
   };
   componentsArray: string[];
   table: ChartTable;
-  remoteTable: ChartTable
+  remoteTable: ChartTable;
   remoteColumns: {
     [componentId: string]: {
       [field: string]: ColumnSelector;
@@ -141,7 +142,7 @@ export interface ChartOperationsContextObject {
   selectedComponentId: string;
   getComponents: (ids: string[]) => ChartComponent[];
   computedChartHeight: () => number;
-  dataTable: ChartTable
+  dataTable: ChartTable;
 }
 
 type FunctionalSetter = (prevChart: Chart) => void;
