@@ -61,9 +61,9 @@ function RenderAreaClosed(props: any) {
     // gradientY1,
     // gradientY2,
   } = config;
-  const { setInteractions, getChartTable } = useChartOps();
+  const { setInteractions, dataTable } = useChartOps();
 
-  const chartTable = getChartTable();
+  const chartTable = dataTable;
 
   const XX = X ? getTableColumn(chartTable, X) : defaultX;
   const YY = Y ? getTableColumn(chartTable, Y) : defaultY;

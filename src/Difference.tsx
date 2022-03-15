@@ -16,9 +16,9 @@ function Difference(props: any) {
   const { config, group } = props;
   const { belowArea, aboveArea, width, height, X, Y, defaultX, defaultY } =
     config;
-  const { getChartTable } = useChartOps();
+  const { dataTable } = useChartOps();
 
-  const chartTable = getChartTable();
+  const chartTable = dataTable;
 
   const xType = X
     ? chartTable?.head?.find((col) => col.name === X)?.type

@@ -77,9 +77,9 @@ function parseMixedTags(s: string) {
 function RenderText(props: any) {
   const { config, children } = props;
   const { font, display, margin, color, innerText } = config;
-  const { getChartTable, getComponents } = useChartOps();
+  const { dataTable, getComponents } = useChartOps();
 
-  const chartTable = getChartTable();
+  const chartTable = dataTable;
   const childComponents = getComponents(children);
   const mixedTags = parseMixedTags(innerText.trim());
 

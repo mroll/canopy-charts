@@ -23,12 +23,12 @@ function Grid(props: any) {
   } = config;
   const {
     setInteractions,
-    getChartTable,
+    dataTable,
     getXColumnSelectors,
     getYColumnSelectors,
   } = useChartOps();
 
-  const chartTable = getChartTable();
+  const chartTable = dataTable;
 
   const interactClass = setInteractions(id, {
     drag: {

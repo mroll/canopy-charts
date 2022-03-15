@@ -21,9 +21,9 @@ function RenderPie(props: any) {
     defaultX,
     defaultY,
   } = config;
-  const { getChartTable } = useChartOps();
+  const { dataTable } = useChartOps();
 
-  const chartTable = getChartTable();
+  const chartTable = dataTable;
 
   const XX = X ? getTableColumn(chartTable, X) : defaultX;
   const YY = Y ? getTableColumn(chartTable, Y) : defaultY;

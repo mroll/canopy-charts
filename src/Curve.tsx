@@ -33,12 +33,12 @@ function RenderCurve(props: any) {
   } = config;
   const {
     setInteractions,
-    getChartTable,
+    dataTable,
     getXColumnSelectors,
     getYColumnSelectors,
   } = useChartOps();
 
-  const chartTable = getChartTable();
+  const chartTable = dataTable;
 
   const xType = X
     ? chartTable?.head?.find((col) => col.name === X.name)?.type

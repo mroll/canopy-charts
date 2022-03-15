@@ -31,9 +31,9 @@ function BarGroup(props: any) {
     defaultX,
     defaultY,
   } = config;
-  const { getChartTable, getYColumnSelectors } = useChartOps();
+  const { dataTable, getYColumnSelectors } = useChartOps();
 
-  const chartTable = getChartTable();
+  const chartTable = dataTable;
 
   const XX = X ? getTableColumn(chartTable, X.name) : defaultX;
   const YY = Y
