@@ -23,9 +23,10 @@ class DataService {
     ).then((res) => res.json());
   }
 
-  async dataTable(chartId: string) {
+  async dataTable(chartId: string, apiKey?: string) {
+    const apiKeyParam = apiKey ? `&apiKey=${apiKey}` : "";
     return await fetch(
-      `http://${process.env.REACT_APP_API_HOSTNAME}/data-table?id=${chartId}`,
+      `http://${process.env.REACT_APP_API_HOSTNAME}/data-table?id=${chartId}${apiKeyParam}`,
       {
         method: "get",
         headers: {

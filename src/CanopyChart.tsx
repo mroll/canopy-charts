@@ -5,7 +5,7 @@ import { Chart, ChartTable } from "./types";
 import { dataService } from "./DataService";
 
 function CanopyChart(props: any) {
-  const { id, table } = props;
+  const { id, table, apiKey } = props;
   const [chart, setChart] = useState<Chart | null>(null);
   const [dataTable, setDataTable] = useState<ChartTable>({
     head: [],
@@ -31,7 +31,7 @@ function CanopyChart(props: any) {
 
   useEffect(() => {
     const localGetTable = async () => {
-      const table = await dataService.dataTable(id);
+      const table = await dataService.dataTable(id, apiKey);
       setDataTable(table);
     };
 
