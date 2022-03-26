@@ -99,6 +99,7 @@ export interface Chart {
     r: number;
     l: number;
   };
+  textHeight: 0;
   userId: string;
   createdAt?: Date;
   componentsById: {

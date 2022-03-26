@@ -102,39 +102,6 @@ export function ChartOperationsProvider(args: ChartOperationsProviderArgs) {
               $set: parseInt(event.rect.height, 10),
             },
           });
-
-          if (component.type === "Container") {
-            const container = component;
-            const primaryGroup = Object.values(chart.componentsById).find(
-              (component: any) => component.type === "Group"
-            ) as ChartComponentT;
-
-            const textHeight = chart.textHeight;
-            const computedGroupWidth = container
-              ? (container.config.width as number) -
-                ((container.config.margin as { [key: string]: number })
-                  .l as number) -
-                ((container.config.margin as { [key: string]: number })
-                  .r as number)
-              : primaryGroup.config.width;
-            const computedGroupHeight = container
-              ? (container.config.height as number) -
-                ((container.config.margin as { [key: string]: number })
-                  .t as number) -
-                ((container.config.margin as { [key: string]: number })
-                  .b as number) -
-                (textHeight ? textHeight : 0)
-              : primaryGroup.config.height;
-
-            setComponentFields(primaryGroup.id, {
-              width: {
-                $set: computedGroupWidth,
-              },
-              height: {
-                $set: computedGroupHeight,
-              },
-            });
-          }
         },
       },
       modifiers: [
