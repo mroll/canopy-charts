@@ -27,10 +27,11 @@ function Axis(props: any) {
   const {
     setInteractions,
     dataTable,
+    getChartTable,
     getXColumnSelectors,
     getYColumnSelectors,
   } = useChartOps();
-  const chartTable = dataTable;
+  const chartTable = dataTable || getChartTable();
   const isHorizontal = ["bottom", "top"].includes(orientation);
   const domain = isHorizontal ? getXColumnSelectors() : getYColumnSelectors();
 
