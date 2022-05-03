@@ -13,7 +13,7 @@ class DataService {
 
   async remoteTable(chartId: string, remoteColumns: TableColumn[]) {
     return await axios.post(
-      `https://${process.env.REACT_APP_API_HOSTNAME}/remote-table?chart=${chartId}`,
+      `${process.env.REACT_APP_API_URL}/remote-table?chart=${chartId}`,
       {
         method: "post",
         headers: {
@@ -29,7 +29,7 @@ class DataService {
     const apiKeyParam = apiKey ? `&apiKey=${apiKey}` : "";
     return (
       await axios.get(
-        `https://${process.env.REACT_APP_API_HOSTNAME}/data-table?id=${chartId}${apiKeyParam}`,
+        `${process.env.REACT_APP_API_URL}/data-table?id=${chartId}${apiKeyParam}`,
         {
           method: "get",
           headers: {
