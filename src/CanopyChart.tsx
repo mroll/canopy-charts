@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import axios from "axios";
 
 import CanopyBaseChart from "./CanopyBaseChart";
 import { Chart, ChartTable } from "./types";
@@ -13,9 +14,9 @@ function CanopyChart(props: any) {
   });
 
   const getChart = useCallback(async () => {
-    const _chart = await fetch(
-      `${process.env.REACT_APP_API_URL}/chart?id=${id}`
-    ).then((res) => res.json());
+    const _chart = (
+      await axios.get(`${process.env.REACT_APP_API_URL}/chart?id=${id}`)
+    ).data;
 
     const _table = table || _chart.table;
 
